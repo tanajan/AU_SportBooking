@@ -19,13 +19,32 @@ app.use(bodyParser.json({limit: "2mb"}))
 app.use(cors())
 app.use(express.static(path.join(__dirname, "client", "build")))
 
-//Auto Route
-readdirSync('./routes')
+readdirSync('./server/routes')
     .map(r => app.use("/api",require("./routes/" + r )))
 
+// --------- deployment -------------
+
+__dirname=path.resolve()
+if(process.env.NODE_ENV==='production') {
+     app.use(express.static(path.join(__dirname,'/client/build')))
+
+     app.get('*', (req,res) => {
+        res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+     } )
+} else {
+    app.get("/", (req, res) => {
+        res.send("API is running . .")
+    });
+}
+
+// --------- deployment -------------
+
+//Auto Route
+
+
 const port = process.env.PORT || 8000;
-app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "client", "build", "index.html"));
-});
-app.listen(port,()=>console.log('Server is runnning on port'  + port))
+// app.get("*", (req, res) => {
+//     res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+// });
+app.listen(port,()=>console.log('Server is runnning on port '  + port))
 

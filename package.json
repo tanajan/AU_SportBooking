@@ -1,21 +1,24 @@
 {
-  "name": "server",
+  "name": "au-spor-tBooking",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "AU Sport Reservation_Senior Project2",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js",
-    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
+    "start": "nodemon server/server.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm start\" \"npm run client\"",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "engines": {
     "node": "14.15.4"
-  },  
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.20.0",
+    "concurrently": "^7.3.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
@@ -24,7 +27,17 @@
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
     "node-cron": "^3.0.1",
-    "nodemon": "^2.0.19",
     "request": "^2.88.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tanajan/AU_SportBooking.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tanajan/AU_SportBooking/issues"
+  },
+  "homepage": "https://github.com/tanajan/AU_SportBooking#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.19"
   }
 }

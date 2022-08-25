@@ -24,13 +24,11 @@
     "start": "react-scripts start",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "build": "cd client && npm run build",
+    "build": "react-scripts build",
     "install-client": "cd client && npm install",
-    "heroku-postbuild": "npm run install-client && npm run build",
-    "server": "cd server && nodemon server.js",
-    "develop": "concurrently --kill-others-on-fail \"npm run server\" \"npm run start --prefix client\""
+    "heroku-postbuild": "npm run install-client && npm run build"
   },
-  "proxy": "http://localhost:8000",
+  
   "eslintConfig": {
     "extends": [
       "react-app",
