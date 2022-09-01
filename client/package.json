@@ -1,4 +1,5 @@
 {
+  "homepage": "https://au-sportbooking.vercel.com",
   "name": "client",
   "version": "0.1.0",
   "private": true,
@@ -12,9 +13,11 @@
     "@testing-library/user-event": "^13.5.0",
     "antd": "^4.21.7",
     "axios": "^0.27.2",
+    "gapi-script": "^1.2.0",
     "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-google-login": "^5.2.2",
     "react-hook-form": "^7.34.0",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
@@ -28,7 +31,6 @@
     "install-client": "cd client && npm install",
     "heroku-postbuild": "npm run install-client && npm run build"
   },
-  
   "eslintConfig": {
     "extends": [
       "react-app",

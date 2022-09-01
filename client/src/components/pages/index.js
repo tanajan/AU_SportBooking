@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react'
+import React, {Component,useState,useEffect} from 'react'
 
 import FullCalendar from '@fullcalendar/react' // must go before plugins
 import dayGridPlugin from '@fullcalendar/daygrid' // a plugin!
@@ -236,4 +236,4 @@ const Index = () => {
   )
 }
 
-export default Index
+export default Index;
