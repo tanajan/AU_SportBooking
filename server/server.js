@@ -19,8 +19,8 @@ app.use(bodyParser.json({limit: "2mb"}))
 app.use(cors())
 app.use(express.static(path.join(__dirname, "client", "build")))
 
-// const temppath = './server/routes'
-const temppath = './routes'
+const temppath = './server/routes'
+// const temppath = './routes'
 readdirSync(temppath)
     .map(r => app.use("/api",require("./routes/" + r )))
 
