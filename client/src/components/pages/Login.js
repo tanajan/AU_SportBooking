@@ -32,15 +32,13 @@ const logOut = () => {
 
 return (
     <div>
-        <h2>AU Sport Booking</h2>
-        <br />
-        <br />
         {profile ? (
             <div>
                 <img src={profile.imageUrl} alt="user image" />
                 <h3>User Logged in</h3>
                 <p>Name: {profile.name}</p>
                 <p>Email Address: {profile.email}</p>
+                <p>Member ID: {profile.email.slice(0,8)}</p>
                 <br />
                 <br />
                 <GoogleLogout clientId={clientId} buttonText="Log out" onLogoutSuccess={logOut} />

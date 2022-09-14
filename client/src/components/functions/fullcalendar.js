@@ -1,9 +1,13 @@
 import axios from 'axios'
 
+export const queryDate = async(values) =>
+    await axios.post(process.env.REACT_APP_API+'/dashboard',values)
 
 export const createEvent = async(values) =>
     await axios.post(process.env.REACT_APP_API+'/event',values)
 
+export const listEventwithcon = async(values) =>
+    await axios.post(process.env.REACT_APP_API+'/listevent',values)
 
 export const listEvent = async() =>
     await axios.get(process.env.REACT_APP_API+'/event')

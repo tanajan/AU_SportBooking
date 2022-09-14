@@ -13,7 +13,10 @@ const bookingSchema = mongoose.Schema({
     end: {
         type: Date
     },
-    color:{
+    sportType:{
+        type: String
+    },
+    courtNum: {
         type: String
     }
 },{ timestamp: true})

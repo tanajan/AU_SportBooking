@@ -9,7 +9,9 @@ const mainNav = () => (
         <div className="main-nav-button">
             <ul>
                 <li><NavLink to="/login">Login</NavLink></li>
+                <li><NavLink to="/home">Main</NavLink></li>
                 <li><NavLink to="/bookings">Bookings</NavLink></li>
+                <li><NavLink to="/dashboard">Dashboard</NavLink></li>
             </ul>
         </div>
     </header>

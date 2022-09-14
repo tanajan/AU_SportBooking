@@ -1,22 +1,54 @@
 import React, {Component,useState,useEffect} from 'react'
 
-import FullCalendar from '@fullcalendar/react' // must go before plugins
+import FullCalendar, { render } from '@fullcalendar/react' // must go before plugins
 import dayGridPlugin from '@fullcalendar/daygrid' // a plugin!
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin, { Draggable }from "@fullcalendar/interaction" // needed for dayClick
 
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-import { Col, Row, Card, Tag, Modal} from 'antd';
+import { Col, Row, Card, Tag, Modal, Radio} from 'antd';
+import { useSearchParams } from 'react-router-dom';
 
 import moment from 'moment'
 
 //Functions
-import {createEvent, listEvent, handlecurrentMonth, updateEvent, deleteEvent} from "../functions/fullcalendar"
+import {createEvent, listEvent, handlecurrentMonth, updateEvent, deleteEvent, listEventwithcon} from "../functions/fullcalendar"
 
 import './index.css'
 
+const courtNumBad = [
+  {
+    label: '1',
+    value: 'B1'
+  },
+  {
+    label: '2',
+    value: 'B2'
+  },
+  {
+    label: '3',
+    value: 'B3'
+  },
+  {
+    label: '4',
+    value: 'B4'
+  }
+]
 
+const courtNumTenVol = [
+  {
+    label: '1',
+    value: 'TV1'
+  },
+  {
+    label: '2',
+    value: 'TV2'
+  }
+]
 const Index = () => {
+  const [searchparams] = useSearchParams();
+  const selectedSport = searchparams.get("type");
+  
   const { confirm } = Modal;
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isModalVisible1, setIsModalVisible1] = useState(false);
@@ -25,10 +57,17 @@ const Index = () => {
     par1: '',
     start: '',
     end: '',
-    sportType:''
+    sportType:'',
+    courtNum: ''
   })
   const [bookings, setEvents] = useState([])
   const [currentBooking, setCurrentBooking] = useState([])
+  const [courtNum, setCourtNum] = useState('')
+
+  const onCourtNumChange = ({target: {value}}) => {
+    setCourtNum(value);
+    loadData()
+  }
 
   const showConfirm = () => {
     confirm({
@@ -51,17 +90,20 @@ const Index = () => {
     { id:'1',name:'Tennis', color:'#B6FFA1'},
     { id:'2',name:'Volleyball', color:'#C0F0FF'},
   ]
+
   useEffect(()=> {
     loadData()
-  },[])
+  },[courtNum])
+
   const loadData = () => {
-    listEvent()
-    .then(res=> {
+    listEventwithcon({courtNum})
+    .then(res=>{
       setEvents(res.data)
     }).catch(err=> {
       console.log(err)
     })
   }
+
 
   const handleClick = (info)=> {
     const id = info.event._def.extendedProps._id
@@ -87,7 +129,9 @@ const Index = () => {
     setValues({
       ...values,
       start:info.startStr,
-      end:info.endStr
+      end:info.endStr,
+      sportType:selectedSport,
+      courtNum:courtNum
     })
   }
 
@@ -112,6 +156,7 @@ const Index = () => {
 
 
   const handleOk = () => {
+    console.log(values)
     createEvent(values)
     .then(res=> {
         setValues({...values, title: '', par1: ''})
@@ -153,10 +198,11 @@ const Index = () => {
   const betweenDate = currentBooking.filter((item) => {
     return r >= moment(item.start) && r < moment(item.end)
   })
+  
   return (
     <div>
         <Row>
-          <Col span = {8}>
+          <Col span = {6}>
             <Card>
               <div id="external-book">
               <ul>
@@ -186,7 +232,27 @@ const Index = () => {
               </ol>
             </Card>
           </Col>
-          <Col span = {16}>
+          <Col span = {18}>
+          <Row>
+            {(() => {
+              switch(selectedSport) {
+                case "Volleyball":
+                  return (
+                  <Radio.Group options={courtNumTenVol} onChange={onCourtNumChange} value={courtNum} optionType="button" buttonStyle='solid' />
+                  );
+                case "Badminton":
+                  return (
+                  <Radio.Group options={courtNumBad} onChange={onCourtNumChange} value={courtNum} optionType="button" buttonStyle='solid' />
+                  );
+                case "Tennis":
+                  return (
+                  <Radio.Group options={courtNumTenVol} onChange={onCourtNumChange} value={courtNum} optionType="button" buttonStyle='solid' />
+                  );
+                default:
+                  return null;
+              }
+            })()}
+          </Row>
           <FullCalendar
             plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin ]}
             headerToolbar = {{
@@ -198,39 +264,23 @@ const Index = () => {
         selectable={true}
         select = {handleSelect}
         datesSet={currentMonth}
-        eventClick={handleClick} 
+        eventClick={handleClick}
         />
-        <Modal title="Create Booking" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+        <Modal title={selectedSport} visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
             <h3>Requester</h3>
             <input name = "title" value={values.title} onChange={onChangeValues}/>
             <br></br>
             <h3>Participant 1</h3>
             <input name = "par1" value={values.par1} onChange={onChangeValues}/>
             <br></br>
-            <h3>Sport Type</h3>
-            <select name="color" onChange={onChangeValues}>
-              <option key={999} value="">--Choose Sport Type--</option>
-              {sportType.map((item,index)=>
-                <option key={index} 
-                value={item.color}
-                style={{backgroundColor:item.color}}>
-                  {item.name}
-                </option>
-              )}
-            </select>
       </Modal>
       <Modal title="Booking Information" visible={isModalVisible1} onOk={handleOk1} onCancel={handleCancel1}
       footer={[
       
       <button onClick={handleCancel1}>Cancel</button>,
       <button onClick={showConfirm}> Delete</button>]}>
-            <h1>
-                
-            </h1>
-
-      </Modal>
-          </Col>
-          
+        </Modal>
+        </Col>
         </Row>
     </div>
   )
