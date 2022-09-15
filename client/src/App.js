@@ -21,7 +21,7 @@ function App() {
   useEffect(() => {
     document.title = 'AU Sport Booking'
   }, [])
-  console.log(profile);
+  
 
   return (
     <BrowserRouter>
@@ -33,7 +33,7 @@ function App() {
       <Route index element={<Login setProfile={setProfile}/>} />
       <Route path="/login" element={<Login setProfile={setProfile}/>}/>
       <Route path="/home" element={<ProtectedRoute user={profile}><SportSelection/></ProtectedRoute>}/>
-      <Route path="/bookings" element={<Index />}/>
+      <Route path="/bookings" element={<ProtectedRoute user={profile}><Index /></ProtectedRoute>}/>
       <Route path="/dashboard" element={<ProtectedRoute user={profile}><Dashboard /></ProtectedRoute>}/>
     </Routes>
     </main>

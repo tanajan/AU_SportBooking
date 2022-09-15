@@ -45,7 +45,7 @@ const courtNumTenVol = [
     value: 'TV2'
   }
 ]
-const Index = () => {
+const Index = ({user}) => {
   const [searchparams] = useSearchParams();
   const selectedSport = searchparams.get("type");
   
@@ -124,6 +124,7 @@ const Index = () => {
   }
   
   const handleSelect = (info) => {
+    console.log(user)
     showModal();
     setValues({
       ...values,
@@ -263,6 +264,7 @@ const Index = () => {
           </Col>
           <Col span = {18}>
           <Row>
+            <h3>Court Number :  </h3> 
             {(() => {
               switch(selectedSport) {
                 case "Volleyball":

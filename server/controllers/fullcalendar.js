@@ -1,5 +1,6 @@
 const { events } = require('../models/Booking');
 const Booking = require('../models/Booking');
+const User = require("../models/User");
 
 
 exports.queryEvent = async(req,res) => {
@@ -42,6 +43,8 @@ exports.createEvent = async(req,res)=> {
         res.status(500).send("Server Error!")
     }
 }
+
+
 exports.listEvent = async(req,res)=> {
     try {
         res.send(await Booking.find({}))   
