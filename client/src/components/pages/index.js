@@ -125,7 +125,6 @@ const Index = () => {
   
   const handleSelect = (info) => {
     showModal();
-    console.log(info)
     setValues({
       ...values,
       start:info.startStr,
@@ -154,16 +153,46 @@ const Index = () => {
     setIsModalVisible(true);
   };
 
+  const isOverlapped = (info) => {
+    console.log(info);
+    var temp_booking = currentBooking;
+    for(let i = 0; i < temp_booking.length; i++) {
+      const Abooking = temp_booking[i];
+      //start-time in between any of the events
+      if (info.start > Abooking.start && info.end < Abooking.end) {
+        console.log("start-time in between any of the events")
+        return true;
+      }
+      //end-time in between any of the events
+      if (info.end > Abooking.start && info.end < Abooking.end) {
+        console.log("start-time in between any of the events")
+        return true;
+      }
+      //any of the events in between/on the start-time and end-time
+      if (info.start <= Abooking.start && info.end >= Abooking.end) {
+        console.log("start-time in between any of the events")
+        return true;
+      }
+    }
+    console.log("No Overlapp")
+    return false;
+  }
 
   const handleOk = () => {
     console.log(values)
-    createEvent(values)
+    if (isOverlapped(values)) {
+      console.log("Something overlapped")
+      setIsModalVisible(false);
+    } else {
+      createEvent(values)
     .then(res=> {
         setValues({...values, title: '', par1: ''})
         loadData()
     }).catch (err => 
       console.log(err))
     setIsModalVisible(false);
+    }
+    
   };
 
   const handleCancel = () => {

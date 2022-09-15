@@ -1,7 +1,10 @@
 import React from "react";
-import { createSearchParams, Link, useNavigate } from 'react-router-dom'
-const SportSelection = () => {
+import { createSearchParams, Link, useNavigate, Navigate } from 'react-router-dom'
+
+const SportSelection = ({user}) => {
+    
     const navigate = useNavigate();
+    
     const selectBadminton= (type) => {
         navigate({
             pathname: "/bookings",

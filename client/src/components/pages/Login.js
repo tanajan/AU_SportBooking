@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
 import { gapi } from 'gapi-script';
 import '../style/Login_style.css';
+import { createSearchParams, Link, useNavigate, Navigate } from 'react-router-dom'
 
 
-function Login() {
-  const [ profile, setProfile ] = useState();
+function Login({setProfile}) {
+  const [ user, setUser ] = useState();
 
   const clientId = '288670835064-8ittcsg7le6vthmsl90m88j9aljhclf7.apps.googleusercontent.com';
+  const navigate = useNavigate();
 
   useEffect(() => {
       const initClient = () => {
@@ -18,7 +20,9 @@ function Login() {
       };
   gapi.load('client:auth2', initClient);
   });
+
   const onSuccess = (res) => {
+    setUser(res.profileObj);
     setProfile(res.profileObj);
 };
 
@@ -28,17 +32,18 @@ const onFailure = (err) => {
 
 const logOut = () => {
     setProfile(null);
+    setUser(null);
 };
 
 return (
     <div>
-        {profile ? (
+        {user ? (
             <div>
-                <img src={profile.imageUrl} alt="user image" />
+                <img src={user.imageUrl} alt="user image" />
                 <h3>User Logged in</h3>
-                <p>Name: {profile.name}</p>
-                <p>Email Address: {profile.email}</p>
-                <p>Member ID: {profile.email.slice(0,8)}</p>
+                <p>Name: {user.name}</p>
+                <p>Email Address: {user.email}</p>
+                <p>Member ID: {user.email.slice(0,8)}</p>
                 <br />
                 <br />
                 <GoogleLogout clientId={clientId} buttonText="Log out" onLogoutSuccess={logOut} />
