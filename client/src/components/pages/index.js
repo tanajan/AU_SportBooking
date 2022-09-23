@@ -1,18 +1,18 @@
-import React, {Component,useState,useEffect} from 'react'
+import React, {useState,useEffect} from 'react'
 
 import FullCalendar, { render } from '@fullcalendar/react' // must go before plugins
 import dayGridPlugin from '@fullcalendar/daygrid' // a plugin!
 import timeGridPlugin from '@fullcalendar/timegrid'
-import interactionPlugin, { Draggable }from "@fullcalendar/interaction" // needed for dayClick
+import interactionPlugin from "@fullcalendar/interaction" // needed for dayClick
 
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { Col, Row, Card, Tag, Modal, Radio} from 'antd';
 import { useSearchParams } from 'react-router-dom';
-
+import { useSelector  } from 'react-redux'
 import moment from 'moment'
 
 //Functions
-import {createEvent, listEvent, handlecurrentMonth, updateEvent, deleteEvent, listEventwithcon} from "../functions/fullcalendar"
+import {createEvent, checkUser, listEvent, handlecurrentMonth, updateEvent, deleteEvent, listEventwithcon} from "../functions/fullcalendar"
 
 import './index.css'
 
@@ -48,13 +48,17 @@ const courtNumTenVol = [
 const Index = ({user}) => {
   const [searchparams] = useSearchParams();
   const selectedSport = searchparams.get("type");
-  
+  const tempuser = useSelector(state=> ({...state}))
   const { confirm } = Modal;
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isModalVisible1, setIsModalVisible1] = useState(false);
   const [values, setValues] = useState({
-    title: '',
+    requester: '',
     par1: '',
+    par2: '',
+    par3: '',
+    par4: '',
+    par5: '',
     start: '',
     end: '',
     sportType:'',
@@ -63,7 +67,6 @@ const Index = ({user}) => {
   const [bookings, setEvents] = useState([])
   const [currentBooking, setCurrentBooking] = useState([])
   const [courtNum, setCourtNum] = useState('')
-
   const onCourtNumChange = ({target: {value}}) => {
     setCourtNum(value);
     loadData()
@@ -83,7 +86,7 @@ const Index = ({user}) => {
     });
   };
 
-
+  
   const [id, setId] = useState('')
 
   const sportType = [
@@ -98,6 +101,7 @@ const Index = ({user}) => {
   const loadData = () => {
     listEventwithcon({courtNum})
     .then(res=>{
+      setValues({...values, requester: tempuser.user.user.googleId})
       setEvents(res.data)
     }).catch(err=> {
       console.log(err)
@@ -110,6 +114,7 @@ const Index = ({user}) => {
     console.log(id)
     setId(id)
     showModal1()
+    
   }
 
   const handleDelete = () => {
@@ -124,14 +129,34 @@ const Index = ({user}) => {
   }
   
   const handleSelect = (info) => {
-    console.log(user)
+    const tday = new Date()
+    /*Check Saturday*/
+    if(tday.getDay() == 6) {
+      alert("Sport Center is closed on Saturday!")
+    } else {
+      /*Check Available time*/
+      if(tday.getHours >=8 && tday.getHours<=20) {
+        showModal();
+        setValues({
+          ...values,
+          start:info.startStr,
+          end:info.endStr,
+          sportType:selectedSport,
+          courtNum:courtNum
+        })
+      } else {
+        alert("Sorry! We are open from 8 AM to 8 PM")
+      }
+  }
+  }
+  const handleAdminSelect = (info) => {
     showModal();
     setValues({
-      ...values,
-      start:info.startStr,
-      end:info.endStr,
-      sportType:selectedSport,
-      courtNum:courtNum
+          ...values,
+          start:info.startStr,
+          end:info.endStr,
+          sportType:selectedSport,
+          courtNum:courtNum
     })
   }
 
@@ -155,49 +180,60 @@ const Index = ({user}) => {
   };
 
   const isOverlapped = (info) => {
-    console.log(info);
     var temp_booking = currentBooking;
     for(let i = 0; i < temp_booking.length; i++) {
       const Abooking = temp_booking[i];
       //start-time in between any of the events
       if (info.start > Abooking.start && info.end < Abooking.end) {
-        console.log("start-time in between any of the events")
+        alert("start-time in between any of the events")
         return true;
       }
       //end-time in between any of the events
       if (info.end > Abooking.start && info.end < Abooking.end) {
-        console.log("start-time in between any of the events")
+        alert("start-time in between any of the events")
         return true;
       }
       //any of the events in between/on the start-time and end-time
       if (info.start <= Abooking.start && info.end >= Abooking.end) {
-        console.log("start-time in between any of the events")
+        alert("start-time in between any of the events")
         return true;
       }
     }
-    console.log("No Overlapp")
     return false;
   }
 
   const handleOk = () => {
-    console.log(values)
+    if(values.courtNum == "") {
+      alert("Court Number need to be selected")
+      setValues({...values, par1: '',par2: '',par3: '',par4: '',par5: ''})
+      setIsModalVisible(false);
+    } else{
     if (isOverlapped(values)) {
-      console.log("Something overlapped")
+      setValues({...values, par1: '',par2: '',par3: '',par4: '',par5: ''})
       setIsModalVisible(false);
     } else {
-      createEvent(values)
-    .then(res=> {
-        setValues({...values, title: '', par1: ''})
-        loadData()
-    }).catch (err => 
-      console.log(err))
-    setIsModalVisible(false);
+      
+      var checkuserexistance = checkUserExist(values)
+      console.log(checkuserexistance)
+      var parnum = checkParticipant();
+      var bookingperiod = (moment(values.end)).diff(moment(values.start))/60000
+      if(Math.floor(bookingperiod/30) > Math.floor(parnum/2)) {
+        alert("Not enough number of participants")
+      } else {
+        createEvent(values)
+        .then(res=> {
+            setValues({...values, par1: '',par2: '',par3: '',par4: '',par5: ''})
+            loadData()
+        }).catch (err => 
+          console.log(err))
+        setIsModalVisible(false);
+      }
     }
-    
+  }
   };
 
   const handleCancel = () => {
-    setValues({...values, title: '', par1: ''})
+    setValues({...values, par1: '',par2: '',par3: '',par4: '',par5: ''})
     setIsModalVisible(false);
   };
 
@@ -216,8 +252,78 @@ const Index = ({user}) => {
   };
 
   const handleCancel1 = () => {
+    setValues({...values, par1: '',par2: '',par3: '',par4: '',par5: ''})
     setIsModalVisible1(false);
   };
+
+  const checkUserExist = (info) => {
+    var emaillist = []
+    if(values.par1 != '') {
+      var strong = '{"email":"'+ values.par1+'@au.edu"}'
+    var emailobj = JSON.parse(strong)
+    emaillist.push(strong)
+    }
+    
+    if(values.par2 != '') {
+    strong = '{"email":"'+ values.par2+'@au.edu"}'
+    emailobj = JSON.parse(strong)
+    emaillist.push(strong)
+    }
+    
+    if(values.par3 != '') {
+    strong = '{"email":"'+ values.par3+'@au.edu"}'
+    emailobj = JSON.parse(strong)
+    emaillist.push(strong)
+    }
+
+    if(values.par4 != '') {
+    strong = '{"email":"'+ values.par4+'@au.edu"}'
+    emailobj = JSON.parse(strong)
+    emaillist.push(strong)
+    }
+
+    if(values.par5 != '') {
+    strong = '{"email":"'+ values.par5+'@au.edu"}'
+    emailobj = JSON.parse(strong)
+    emaillist.push(strong)
+    }
+
+    var i = 0;
+    while(i < emaillist.length) {
+      checkUser(emaillist[i])
+      .then(res=> {
+        const curuser = res.data;
+        if(res.data.length == 0) {
+          return false
+        }
+        }).catch(err => {
+        console.log(err)
+        })
+      i = i+1;
+    }
+    return true
+
+  }
+
+  const checkParticipant = () => {
+    var totalpar = 1;
+    if(values.par1 != "") {
+      totalpar+= 1;
+    }
+    if(values.par2 != "") {
+      totalpar+= 1;
+    }
+    if(values.par3 != "") {
+      totalpar+= 1;
+    }
+    if(values.par4 != "") {
+      totalpar+= 1;
+    }
+    if(values.par5 != "") {
+      totalpar+= 1;
+    }
+    return totalpar;
+  }
 
   const d = moment(new Date()).format('DD/MM/YYYY');
   const r = new Date()
@@ -225,9 +331,6 @@ const Index = ({user}) => {
     return d == moment(item.start).format('DD/MM/YYYY')
   })
   
-  const betweenDate = currentBooking.filter((item) => {
-    return r >= moment(item.start) && r < moment(item.end)
-  })
   
   return (
     <div>
@@ -247,19 +350,21 @@ const Index = ({user}) => {
               </div>
             </Card>
             <Card>
+            {tempuser.user ?<>{tempuser.user.userlv == "ADMIN" ?  
               <ol>
                 {
                   currentBooking.map((item,index) => 
                   <li key = {index}>
                     {d == moment(item.start).format('DD/MM/YYYY')
-                    ?<>{moment(item.start).format('DD/MM/YYYY') + "-" + item.title}<Tag color = "green">Today</Tag></>
+                    ?<>{moment(item.start).format('DD/MM/YYYY') + "-" + item.title + item.courtNum}<Tag color = "green">Today</Tag></>
                     : r >= moment(item.start) && r < moment(item.end)
-                      ? <>{moment(item.start).format('DD/MM/YYYY') + "-" + item.title}<Tag color = "yellow">On going</Tag></>
-                      :<>{moment(item.start).format('DD/MM/YYYY')+ "-" + item.title}</>
+                      ? <>{moment(item.start).format('DD/MM/YYYY') + "-" + item.title + item.courtNum}<Tag color = "yellow">On going</Tag></>
+                      :<>{moment(item.start).format('DD/MM/YYYY')+ "-" + item.title+ item.courtNum}</>
                   }
                   </li>)
                 }
               </ol>
+              : <></>}</> : <></>}
             </Card>
           </Col>
           <Col span = {18}>
@@ -284,6 +389,7 @@ const Index = ({user}) => {
               }
             })()}
           </Row>
+          {tempuser.user ?<>{tempuser.user.userlv == "ADMIN" ?  
           <FullCalendar
             plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin ]}
             headerToolbar = {{
@@ -291,25 +397,70 @@ const Index = ({user}) => {
             center: 'title',
             right: "dayGridMonth,timeGridWeek,timeGridDay"
         }}
+        allDaySlot = {false}
+        slotMinTime = "08:00:00"
+        slotMaxTime =  "20:00:00"
+        slotDuration= "00:30:01"
+        initialView = 'dayGridMonth'
         events = {bookings}
         selectable={true}
-        select = {handleSelect}
+        snapDuration = {true}
+        select = {handleAdminSelect}
         datesSet={currentMonth}
         eventClick={handleClick}
         />
-        <Modal title={selectedSport} visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-            <h3>Requester</h3>
-            <input name = "title" value={values.title} onChange={onChangeValues}/>
-            <br></br>
-            <h3>Participant 1</h3>
-            <input name = "par1" value={values.par1} onChange={onChangeValues}/>
-            <br></br>
+        : <FullCalendar
+        plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin ]}
+        headerToolbar = {{
+        center: 'title'
+    }}
+    initialView = 'timeGridDay'
+    allDaySlot = {false}
+    slotMinTime = "08:00:00"
+    slotMaxTime =  "20:00:00"
+    slotDuration= "00:30:01"
+    events = {bookings}
+    selectable={true}
+    select = {handleSelect}
+    datesSet={currentMonth}
+    eventClick={handleClick}
+    />}</> : <></>}
+        <Modal title={selectedSport + "     Court : " + courtNum} visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+          <Row>
+            <Col span={12}><h3>Requester</h3></Col>
+            <Col span={12}><h3>ID</h3></Col>
+          </Row>
+          <Row>
+            <Col span={12}><h4>{tempuser.user.user.name}</h4></Col>
+            <Col span={12}><h4>{tempuser.user.user.email.slice(0,8)}</h4></Col>
+          </Row>
+          <Row>
+            <Col span={12}><h3>Participant 1 ID</h3></Col>
+            <Col span={12}><input name = "par1" value={values.par1} onChange={onChangeValues}/></Col>
+          </Row>
+          <Row>
+            <Col span={12}><h3>Participant 2 ID</h3></Col>
+            <Col span={12}><input name = "par2" value={values.par2} onChange={onChangeValues}/></Col>
+          </Row>
+          <Row>
+            <Col span={12}><h3>Participant 3 ID</h3></Col>
+            <Col span={12}><input name = "par3" value={values.par3} onChange={onChangeValues}/></Col>
+          </Row>
+          <Row>
+            <Col span={12}><h3>Participant 4 ID</h3></Col>
+            <Col span={12}><input name = "par4" value={values.par4} onChange={onChangeValues}/></Col>
+          </Row>
+          <Row>
+            <Col span={12}><h3>Participant 5 ID</h3></Col>
+            <Col span={12}><input name = "par5" value={values.par5} onChange={onChangeValues}/></Col>
+          </Row>
+            
       </Modal>
       <Modal title="Booking Information" visible={isModalVisible1} onOk={handleOk1} onCancel={handleCancel1}
       footer={[
-      
       <button onClick={handleCancel1}>Cancel</button>,
       <button onClick={showConfirm}> Delete</button>]}>
+        
         </Modal>
         </Col>
         </Row>

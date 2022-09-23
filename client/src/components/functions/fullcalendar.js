@@ -21,4 +21,8 @@ export const updateEvent = async(values) =>
 export const deleteEvent = async(values) =>
     await axios.delete(process.env.REACT_APP_API+'/event/' + values)
 
-    
+export const checkUser = async(values) =>
+    await axios.post(process.env.REACT_APP_API+'/listuser',values)
+
+export const createUser = async(values) =>
+    await axios.post(process.env.REACT_APP_API+'/cuser',values)

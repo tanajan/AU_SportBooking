@@ -13,10 +13,13 @@ import SportSelection from "./components/pages/sportSelection";
 // -----Protected-----
 import ProtectedRoute from "./components/functions/protectedRoute";
 
+// ----- State management
+import { useSelector, useDispatch } from 'react-redux';
+
+
 function App() {
 
-  const [ profile, setProfile ] = useState();
- 
+  const tempuser = useSelector(state=> ({...state}))
 
   useEffect(() => {
     document.title = 'AU Sport Booking'
@@ -30,11 +33,11 @@ function App() {
     <main className="main-content">
     <Routes basename = '/'>
       <Route from="/" to ="/login" exact />
-      <Route index element={<Login setProfile={setProfile}/>} />
-      <Route path="/login" element={<Login setProfile={setProfile}/>}/>
-      <Route path="/home" element={<ProtectedRoute user={profile}><SportSelection/></ProtectedRoute>}/>
-      <Route path="/bookings" element={<ProtectedRoute user={profile}><Index /></ProtectedRoute>}/>
-      <Route path="/dashboard" element={<ProtectedRoute user={profile}><Dashboard /></ProtectedRoute>}/>
+      <Route index element={<Login/>} />
+      <Route path="/login" element={<Login/>}/>
+      <Route path="/home" element={<ProtectedRoute user={tempuser.user}><SportSelection/></ProtectedRoute>}/>
+      <Route path="/bookings" element={<ProtectedRoute user={tempuser.user}><Index /></ProtectedRoute>}/>
+      <Route path="/dashboard" element={<ProtectedRoute user={tempuser.user}><Dashboard /></ProtectedRoute>}/>
     </Routes>
     </main>
     </BrowserRouter>

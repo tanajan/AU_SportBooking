@@ -17,7 +17,7 @@ exports.queryEvent = async(req,res) => {
         console.log("Server Errorr");
         res.status(500).send("Server Error");
     }
-};
+}
 
 exports.listEventwithcon = async(req,res)=> {
     try {
@@ -32,12 +32,11 @@ exports.listEventwithcon = async(req,res)=> {
         console.log("Server Error");
         res.status(500).send("Server Error");
     }
-};
+}
 
 exports.createEvent = async(req,res)=> {
     try {
         res.send(await new Booking(req.body).save())
-        console.log(req.body);
     } catch(err) {
         console.log("Server Error")
         res.status(500).send("Server Error!")
@@ -79,5 +78,31 @@ exports.deleteEvent = async (req,res) => {
     } catch(err) {
         console.log('Server Error')
         res.status(500).send('Server Error!!')
+    }
+}
+
+exports.checkUserExist = async (req,res) => {
+    try {
+        console.log(req.body);
+        const userlist = await User.find({
+            email:{
+                $eq: (req.body.email)
+            },
+        });
+        console.log(userlist)
+        res.send(userlist)
+    } catch (err) {
+        console.log("Server Error");
+        res.status(500).send("Server Error");
+    }
+}
+
+exports.createUser = async (req,res) => {
+    try {
+        res.send(await new User(req.body).save())
+        console.log(req.body)
+    } catch(err) {
+        console.log("Server Error")
+        res.status(500).send("Server Error!")
     }
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { createSearchParams, Link, useNavigate, Navigate } from 'react-router-dom'
+import { createSearchParams,  useNavigate  } from 'react-router-dom'
 
 const SportSelection = ({user}) => {
     

@@ -1,10 +1,22 @@
 const mongoose = require('mongoose')
 
 const bookingSchema = mongoose.Schema({
-    title:{
+    requester:{
         type: String
     },
     par1:{
+        type: String
+    },
+    par2:{
+        type: String
+    },
+    par3:{
+        type: String
+    },
+    par4:{
+        type: String
+    },
+    par5:{
         type: String
     },
     start: {
@@ -18,6 +30,9 @@ const bookingSchema = mongoose.Schema({
     },
     courtNum: {
         type: String
+    },
+    apprstatus: {
+        type: Boolean
     }
 },{ timestamp: true})
 

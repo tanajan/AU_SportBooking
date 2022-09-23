@@ -1,5 +1,5 @@
 .main-nav {
-    position: sticky;
+    position: relative;
     left: 0;
     top: 0;
     width: 100%;
@@ -8,12 +8,14 @@
     display: flex;
     align-items: center;
 }
+
 .scrolled{
     position: fixed;
     top: 0;
     left: 0;
     background-color: lightblue;
-  }
+}
+
 .main-nav-logo h1 {
     margin: 0;
     font-size: 1.5 rem;

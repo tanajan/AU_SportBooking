@@ -2,15 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
 import { gapi } from 'gapi-script';
 import '../style/Login_style.css';
-import { createSearchParams, Link, useNavigate, Navigate } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux';
+import {checkUser, createUser}from "../functions/fullcalendar"
 
-
-function Login({setProfile}) {
+function Login() {
+  const tempuser = useSelector(state=> ({...state}))
+  const dispatch = useDispatch();
   const [ user, setUser ] = useState();
-
   const clientId = '288670835064-8ittcsg7le6vthmsl90m88j9aljhclf7.apps.googleusercontent.com';
-  const navigate = useNavigate();
-
+  const adminid = process.env.REACT_APP_ADMINS.split(",");
+  var userlv = null;
+  
   useEffect(() => {
       const initClient = () => {
       gapi.client.init({
@@ -18,12 +20,34 @@ function Login({setProfile}) {
       scope: ''
         });
       };
+
   gapi.load('client:auth2', initClient);
   });
-
-  const onSuccess = (res) => {
-    setUser(res.profileObj);
-    setProfile(res.profileObj);
+  
+  const onSuccess = (login) => {
+    var userinfo = login.profileObj;
+    checkUser(userinfo)
+        .then(res=> {
+            const curuser = res.data;
+            setUser(curuser);
+        if(res.data.length == 0) {
+            createUser(userinfo)
+        }
+        if(adminid.includes(userinfo.email)) {     
+        userlv = "ADMIN"
+        } else {
+        userlv = "NORMAL"
+        }
+        dispatch({
+        type:'LOGIN',
+        payload: {
+            user: login.profileObj,
+            userlv: userlv
+        }
+        })
+    }).catch(err => {
+        console.log(err)
+    })
 };
 
 const onFailure = (err) => {
@@ -31,19 +55,21 @@ const onFailure = (err) => {
 };
 
 const logOut = () => {
-    setProfile(null);
+    dispatch({
+        type:'LOGOUT',
+        payload: null
+    })
     setUser(null);
 };
 
 return (
     <div>
-        {user ? (
+        {tempuser.user ? (
             <div>
-                <img src={user.imageUrl} alt="user image" />
+                <img src={tempuser.user.user.imageUrl} alt="user image" />
                 <h3>User Logged in</h3>
-                <p>Name: {user.name}</p>
-                <p>Email Address: {user.email}</p>
-                <p>Member ID: {user.email.slice(0,8)}</p>
+                <p>Name: {tempuser.user.user.name}</p>
+                <p>Email Address: {tempuser.user.user.email}</p>
                 <br />
                 <br />
                 <GoogleLogout clientId={clientId} buttonText="Log out" onLogoutSuccess={logOut} />
