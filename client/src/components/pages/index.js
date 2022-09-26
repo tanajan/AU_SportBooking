@@ -258,49 +258,56 @@ const Index = ({user}) => {
 
   const checkUserExist = (info) => {
     var emaillist = []
-    if(values.par1 != '') {
-      var strong = '{"email":"'+ values.par1+'@au.edu"}'
+    if(info.par1 != '') {
+      var strong = '{"email":"'+ info.par1+'@au.edu"}'
     var emailobj = JSON.parse(strong)
     emaillist.push(strong)
     }
     
-    if(values.par2 != '') {
-    strong = '{"email":"'+ values.par2+'@au.edu"}'
+    if(info.par2 != '') {
+    strong = '{"email":"'+ info.par2+'@au.edu"}'
     emailobj = JSON.parse(strong)
     emaillist.push(strong)
     }
     
-    if(values.par3 != '') {
-    strong = '{"email":"'+ values.par3+'@au.edu"}'
+    if(info.par3 != '') {
+    strong = '{"email":"'+ info.par3+'@au.edu"}'
     emailobj = JSON.parse(strong)
     emaillist.push(strong)
     }
 
-    if(values.par4 != '') {
-    strong = '{"email":"'+ values.par4+'@au.edu"}'
+    if(info.par4 != '') {
+    strong = '{"email":"'+ info.par4+'@au.edu"}'
     emailobj = JSON.parse(strong)
     emaillist.push(strong)
     }
 
-    if(values.par5 != '') {
-    strong = '{"email":"'+ values.par5+'@au.edu"}'
+    if(info.par5 != '') {
+    strong = '{"email":"'+ info.par5+'@au.edu"}'
     emailobj = JSON.parse(strong)
     emaillist.push(strong)
     }
 
     var i = 0;
-    while(i < emaillist.length) {
-      checkUser(emaillist[i])
+    var nf = 0;
+    for(let i = 0; i < emaillist.length; i++) {
+      console.log((JSON.parse(emaillist[i])).email)
+      checkUser(JSON.parse(emaillist[i]))
       .then(res=> {
+        console.log("I got some thing here")
+        console.log(res.data)
         const curuser = res.data;
-        if(res.data.length == 0) {
-          return false
-        }
+        console.log(Object.keys(curuser).length)
+        // if(Object.keys(curuser).length === 0) {
+        //   nf = nf + 1;
+        // }
         }).catch(err => {
         console.log(err)
         })
-      i = i+1;
+      
     }
+    console.log(nf)
+    console.log("Its fine")
     return true
 
   }

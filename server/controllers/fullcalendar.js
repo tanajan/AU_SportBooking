@@ -89,6 +89,7 @@ exports.checkUserExist = async (req,res) => {
                 $eq: (req.body.email)
             },
         });
+        console.log("This is the value befoe sending back")
         console.log(userlist)
         res.send(userlist)
     } catch (err) {
