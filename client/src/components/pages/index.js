@@ -435,9 +435,6 @@ const Index = ({ user }) => {
             />
             : <FullCalendar
               plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-              headerToolbar={{
-                center: 'title'
-              }}
               initialView='timeGridDay'
               allDaySlot={false}
               slotMinTime="08:00:00"
