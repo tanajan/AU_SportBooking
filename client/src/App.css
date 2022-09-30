@@ -1,3 +1,16 @@
-.main-content {
-    margin: 4rem 2.5rem;
+/* .main-content {
+    
+} */
+    /* .main-content::before {
+        content: "a";
+        background-image: url('https://placekitten.com/1200/800');
+        background-position: 'center';
+        background-size: 'cover';
+        background-repeat: 'no-repeat';
+        opacity: 0.75;
+    } */
+
+.main-content .main-con {
+    opacity: 1;
+    padding: 0 0 0 2.5rem;
 }

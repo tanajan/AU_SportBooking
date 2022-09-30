@@ -1,7 +1,7 @@
-import React, {useState,useEffect} from 'react'
-import {Routes, Navigate, BrowserRouter, Route} from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { Routes, BrowserRouter, Route } from 'react-router-dom'
 import "./App.css";
-import { useSearchParams } from 'react-router-dom';
+import background from "./components/image/bgi.png";
 
 // ---Pages----
 import Index from "./components/pages/index";
@@ -19,28 +19,57 @@ import { useSelector, useDispatch } from 'react-redux';
 
 function App() {
 
-  const tempuser = useSelector(state=> ({...state}))
+  const tempuser = useSelector(state => ({ ...state }))
 
   useEffect(() => {
     document.title = 'AU Sport Booking'
   }, [])
-  
 
+  const styles = {
+    header: {
+      backgroundImage: `url(${background})`,
+      height: '100vh',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: 'cover',
+      height: '100vh',
+      width: '100vw'
+    },
+
+    content: {
+    zIndex: 'auto',
+    margin: 0,
+    padding: 0,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: "100vw",
+    height: "100vh",
+    position: "absolute",
+    maxHeight: "80vh"
+    }
+  }
   return (
-    <BrowserRouter>
-    <MainNav />
-    <br/>
-    <main className="main-content">
-    <Routes basename = '/'>
-      <Route from="/" to ="/login" exact />
-      <Route index element={<Login/>} />
-      <Route path="/login" element={<Login/>}/>
-      <Route path="/home" element={<ProtectedRoute user={tempuser.user}><SportSelection/></ProtectedRoute>}/>
-      <Route path="/bookings" element={<ProtectedRoute user={tempuser.user}><Index /></ProtectedRoute>}/>
-      <Route path="/dashboard" element={<ProtectedRoute user={tempuser.user}><Dashboard /></ProtectedRoute>}/>
-    </Routes>
-    </main>
-    </BrowserRouter>
+    <div>
+      <BrowserRouter>
+        <MainNav />
+        <br />
+        <main className="main-content">
+          <div style={styles.header}>
+            <div className='main-con' style={styles.content}>
+              <Routes basename='/'>
+                <Route from="/" to="/login" exact />
+                <Route index element={<Login />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/home" element={<ProtectedRoute user={tempuser.user}><SportSelection /></ProtectedRoute>} />
+                <Route path="/bookings" element={<ProtectedRoute user={tempuser.user}><Index /></ProtectedRoute>} />
+                <Route path="/dashboard" element={<ProtectedRoute user={tempuser.user}><Dashboard /></ProtectedRoute>} />
+              </Routes>
+            </div>
+          </div>
+        </main>
+      </BrowserRouter>
+    </div>
   );
 }
 

@@ -77,7 +77,7 @@ return (
         ) : (
             <GoogleLogin
                 clientId={clientId}
-                buttonText="Sign in with Google"
+                buttonText="Sign in with AU email"
                 onSuccess={onSuccess}
                 onFailure={onFailure}
                 cookiePolicy={'single_host_origin'}
