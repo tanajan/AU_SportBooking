@@ -11,8 +11,6 @@ function Login() {
   const [ user, setUser ] = useState();
   const clientId = '288670835064-8ittcsg7le6vthmsl90m88j9aljhclf7.apps.googleusercontent.com';
   const adminid = process.env.REACT_APP_ADMINS.split(",");
-//   console.log(process.env.REACT_APP_ADMINS)
-//   console.log(adminid)
   var userlv = null;
 
   useEffect(() => {
@@ -35,13 +33,6 @@ function Login() {
         if(res.data.length == 0) {
             createUser(userinfo)
         }
-        console.log("This is userinfo email")
-        console.log(userinfo.email)
-        console.log("This is adminid list")
-        console.log("Admin Id")
-        console.log(adminid)
-        console.log("Here is result of includes")
-        console.log(adminid.includes(userinfo.email))
         if(adminid.includes(userinfo.email)) {     
         userlv = "ADMIN"
         } else {
