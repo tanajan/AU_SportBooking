@@ -35,6 +35,7 @@ function Login() {
         if(res.data.length == 0) {
             createUser(userinfo)
         }
+        console.log(curuser)
         if(adminid.includes(userinfo.email)) {     
         userlv = "ADMIN"
         } else {
