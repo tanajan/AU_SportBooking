@@ -11,8 +11,10 @@ function Login() {
   const [ user, setUser ] = useState();
   const clientId = '288670835064-8ittcsg7le6vthmsl90m88j9aljhclf7.apps.googleusercontent.com';
   const adminid = process.env.REACT_APP_ADMINS.split(",");
+  console.log(process.env.REACT_APP_ADMINS)
+  console.log(adminid)
   var userlv = null;
-  
+
   useEffect(() => {
       const initClient = () => {
       gapi.client.init({
@@ -66,7 +68,7 @@ return (
     <div>
         {tempuser.user ? (
             <div>
-                <img src={tempuser.user.user.imageUrl} alt="user image" />
+                <img src={tempuser.user.user.imageUrl} alt="" />
                 <h3>User Logged in</h3>
                 <p>Name: {tempuser.user.user.name}</p>
                 <p>Email Address: {tempuser.user.user.email}</p>
