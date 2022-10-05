@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { Routes, BrowserRouter, Route } from 'react-router-dom'
 import "./App.css";
 import background from "./components/image/bgi.png";
@@ -14,7 +14,7 @@ import SportSelection from "./components/pages/sportSelection";
 import ProtectedRoute from "./components/functions/protectedRoute";
 
 // ----- State management
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 
 function App() {
@@ -32,21 +32,20 @@ function App() {
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
       backgroundSize: 'cover',
-      height: '100vh',
       width: '100vw'
     },
 
     content: {
-    zIndex: 'auto',
-    margin: 0,
-    padding: 0,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: "100vw",
-    height: "100vh",
-    position: "absolute",
-    maxHeight: "80vh"
+      zIndex: 'auto',
+      margin: 0,
+      padding: 0,
+      // display: 'flex',
+      // alignItems: 'center',
+      // justifyContent: 'center',
+      width: "100vw",
+      height: "100vh",
+      // position: "absolute",
+      maxHeight: "60vh"
     }
   }
   return (

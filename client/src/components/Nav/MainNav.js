@@ -3,8 +3,7 @@ import { GoogleLogout } from 'react-google-login';
 import { NavLink } from 'react-router-dom'
 import './MainNav.css'
 import { useSelector, useDispatch } from 'react-redux'
-import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
-import { Menu } from 'antd'
+import abaclogo from "../image/abaclogo.png";
 
 const MainNav = () => {
 
@@ -22,7 +21,8 @@ const MainNav = () => {
     return (
         <header className="main-nav">
             <div className="main-nav-logo">
-                <h1>AU Sport Booking </h1>
+                <img alt="abaclogo" src={abaclogo} style={{width: '75px', height: '75px', padding: '8px', textAlign: 'center'}} />
+                <h1>Sport Reservation </h1>
             </div>
             <div className="main-nav-button">
                 {!user ?

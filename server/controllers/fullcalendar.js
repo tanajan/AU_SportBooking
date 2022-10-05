@@ -19,6 +19,22 @@ exports.queryEvent = async(req,res) => {
     }
 }
 
+exports.chartEvent = async(req,res)=> {
+    try {
+        console.log(req.body);
+        const monbookings = await Booking.find({
+            start:{
+                $gte: new Date (req.body.startdate.stdate),
+                $lte: new Date (req.body.enddate.enddate)
+            },
+        }); 
+        res.send(monbookings)
+    } catch(err) {
+        console.log("Server Errorr");
+        res.status(500).send("Server Error");
+    }
+}
+
 exports.listEventwithcon = async(req,res)=> {
     try {
         console.log(req.body);

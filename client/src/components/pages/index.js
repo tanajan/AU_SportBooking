@@ -12,10 +12,9 @@ import { useSelector } from 'react-redux'
 import moment from 'moment'
 
 //Functions
-import { createEvent, checkUser, listEvent, handlecurrentMonth, updateEvent, deleteEvent, listEventwithcon } from "../functions/fullcalendar"
+import { createEvent, checkUser, handlecurrentMonth, deleteEvent, listEventwithcon } from "../functions/fullcalendar"
 
 import './index.css'
-import { convertLegacyProps } from 'antd/lib/button/button'
 
 const courtNumBad = [
   {

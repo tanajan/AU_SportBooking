@@ -212,3 +212,7 @@ td.rdtYear:hover {
 .rdtTime td {
   cursor: default;
 }
+
+.criclebox {
+  border-radius: 20%;
+}

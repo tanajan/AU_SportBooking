@@ -3,6 +3,9 @@ import axios from 'axios'
 export const queryDate = async(values) =>
     await axios.post(process.env.REACT_APP_API+'/dashboard',values)
 
+export const chartDate = async(values) =>
+    await axios.post(process.env.REACT_APP_API+'/chart',values)
+    
 export const createEvent = async(values) =>
     await axios.post(process.env.REACT_APP_API+'/event',values)
 

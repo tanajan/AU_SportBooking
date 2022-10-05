@@ -32,8 +32,19 @@ const SportSelection = ({ user }) => {
             }).toString()
         });
     };
+
+    const styles = {
+        con: {
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: "100vw",
+            height: "100vh"
+        }
+    }
+
     return (
-        <div>
+        <div style={styles.con}>
             <Row gutter={{
                 xs: 8,
                 sm: 16,
@@ -50,7 +61,7 @@ const SportSelection = ({ user }) => {
                 </Col>
                 <Col className="sportselectbox" span={8}>
                     <Card hoverable title="VolleyBall" style={{ width: 300, height: 400, padding: '8px', textAlign: 'center' }}
-                        cover={<img alt="volleyball" src={volleyball} 
+                        cover={<img alt="volleyball" src={volleyball}
                         />}>
                         <Button onClick={selectVolleyBall} type="primary" shape="round" >
                             Book now!
@@ -66,10 +77,6 @@ const SportSelection = ({ user }) => {
                     </Card>
                 </Col>
             </Row>
-
-
-
-
         </div>
     );
 }

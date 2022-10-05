@@ -17,13 +17,15 @@
     left: 0;
     background-color: lightblue;
 }
-
+.main-nav-logo {
+    display: flex;
+    align-items: center;
+}
 .main-nav-logo h1 {
     margin: 0;
     font-size: 1.5 rem;
     padding: 0;
     list-style: none;
-    display: flex;
     gap: 1rem;
 
 }
