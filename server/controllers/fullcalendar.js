@@ -1,7 +1,9 @@
-const { events } = require('../models/Booking');
 const Booking = require('../models/Booking');
 const User = require("../models/User");
-
+const {notifyBooking} = require('../function/notify')
+const cron = require('node-cron')
+const moment = require('moment');
+const { notify } = require('../routes/fullcalendar');
 
 exports.queryEvent = async(req,res) => {
     try {
@@ -52,6 +54,7 @@ exports.listEventwithcon = async(req,res)=> {
 
 exports.createEvent = async(req,res)=> {
     try {
+        console.log(res.body)
         res.send(await new Booking(req.body).save())
     } catch(err) {
         console.log("Server Error")
@@ -82,6 +85,23 @@ exports.currentMonth = async(req,res)=> {
     } catch(err) {
         console.log("Server Error")
         res.status(500).send("Server Error!")
+    }
+}
+
+ exports.currentday = async(req,res)=> {
+    try {
+        const d = new Date();
+        const currentD = await Booking.find({}).sort({start : 1})
+        const current = currentD.filter(item=>{
+            return d.getFullYear() === item.start.getFullYear() && d.getMonth() === item.start.getMonth() && d.getDate() === item.start.getDate()
+        })
+        console.log(current)
+        for(t in current) {
+            const msg = "Bookings"+ current[t].sportType
+            notifyBooking(msg)
+        }
+    } catch(err) {
+        console.log("Server Error")
     }
 }
 
@@ -123,3 +143,7 @@ exports.createUser = async (req,res) => {
         res.status(500).send("Server Error!")
     }
 }
+
+// cron.schedule('43 8 * * *', () => {
+//     currentday()
+// });

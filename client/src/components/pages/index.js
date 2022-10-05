@@ -6,7 +6,7 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from "@fullcalendar/interaction" // needed for dayClick
 
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-import { Col, Row, Card, Tag, Modal, Radio, message } from 'antd';
+import { Col, Row, Card, Typography, Modal, Radio, message } from 'antd';
 import { useSearchParams } from 'react-router-dom';
 import { useSelector } from 'react-redux'
 import moment from 'moment'
@@ -15,6 +15,18 @@ import moment from 'moment'
 import { createEvent, checkUser, handlecurrentMonth, deleteEvent, listEventwithcon } from "../functions/fullcalendar"
 
 import './index.css'
+
+const styles = {
+  con: {
+      backgroundColor: "#f2f2f2",
+      padding: "250px",
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: "100vw",
+      height: "60vh"
+  }
+}
 
 const courtNumBad = [
   {
@@ -62,10 +74,12 @@ const Index = ({ user }) => {
     start: '',
     end: '',
     sportType: '',
+    title:'',
     courtNum: ''
   })
   const [bookings, setEvents] = useState([])
   const [currentBooking, setCurrentBooking] = useState([])
+  console.log(bookings)
   const [courtNum, setCourtNum] = useState('')
   const onCourtNumChange = ({ target: { value } }) => {
     setCourtNum(value);
@@ -89,6 +103,8 @@ const Index = ({ user }) => {
 
   const [id, setId] = useState('')
 
+  const { Title } = Typography;
+  
   const sportType = [
     { id: '1', name: 'Tennis', color: '#B6FFA1' },
     { id: '2', name: 'Volleyball', color: '#C0F0FF' },
@@ -145,6 +161,7 @@ const Index = ({ user }) => {
             start: info.startStr,
             end: info.endStr,
             sportType: selectedSport,
+            title: selectedSport,
             courtNum: courtNum
           })
         } else {
@@ -161,6 +178,7 @@ const Index = ({ user }) => {
       start: info.startStr,
       end: info.endStr,
       sportType: selectedSport,
+      title: selectedSport,
       courtNum: courtNum
     })
     console.log(values)
@@ -171,6 +189,7 @@ const Index = ({ user }) => {
     const mm = moment(m).format('M')
     handlecurrentMonth({ mm })
       .then(res => {
+        console.log(res.data)
         setCurrentBooking(res.data)
       }).catch(err => {
         console.log(err)
@@ -226,6 +245,7 @@ const Index = ({ user }) => {
         } else {
           var checkuserexistance = await checkUserExist(values)
           if (checkuserexistance) {
+            console.log(values)
             createEvent(values)
               .then(res => {
                 setValues({ ...values, par1: '', par2: '', par3: '', par4: '', par5: '' })
@@ -345,7 +365,7 @@ const Index = ({ user }) => {
 
 
   return (
-    <div className='main-booking'>
+    <div className='main-booking' style={styles.con}>
       <Row gutter={{
         xs: 8,
         sm: 16,
@@ -387,6 +407,7 @@ const Index = ({ user }) => {
               : <></>}</> : <></>}
           </Card> */}
         {/* </Col> */}
+        
         <Col span={24}>
           <Row>
 

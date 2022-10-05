@@ -31,6 +31,9 @@ const bookingSchema = mongoose.Schema({
     courtNum: {
         type: String
     },
+    title: {
+        type: String
+    },
     apprstatus: {
         type: Boolean
     }

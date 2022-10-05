@@ -5,14 +5,13 @@ import { MinusOutlined } from "@ant-design/icons";
 import lineChart from "./blinechart_config.js";
 import { chartDate } from "../functions/fullcalendar";
 import { useSelector } from 'react-redux'
-
 const LineChart = () => {
     const { Title } = Typography;
     const yearforchart = useSelector(state => ({ ...state.chart }))
     const badmintonNum = [];
     const volleyballnum = [];
     const tennisnum = [];
-    const [aya,setaya] = useState();
+    const [aya,setaya] = useState(lineChart.series);
     const countSportbookings = (type, bookinglist) => {
         let counter = 0;
         for (let i = 0; i < bookinglist.data.length; i++) {
@@ -61,14 +60,11 @@ const LineChart = () => {
         ]
         
         setaya(series)
-        console.log(series)
     }
     useEffect(() => {
         prepareDate()
     }, [])
 
-    console.log("This is state aya")
-    console.log(aya)
     return (
         <>
             <div className="linechart">
