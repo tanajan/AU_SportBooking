@@ -88,6 +88,7 @@ exports.currentMonth = async(req,res)=> {
     }
 }
 
+
  exports.currentday = async(req,res)=> {
     try {
         const d = new Date();
@@ -117,6 +118,16 @@ exports.deleteEvent = async (req,res) => {
     }
 }
 
+exports.createUser = async (req,res) => {
+    try {
+        res.send(await new User(req.body).save())
+        console.log(req.body)
+    } catch(err) {
+        console.log("Server Error")
+        res.status(500).send("Server Error!")
+    }
+}
+
 exports.checkUserExist = async (req,res) => {
     try {
         console.log(req.body);
@@ -125,7 +136,6 @@ exports.checkUserExist = async (req,res) => {
                 $eq: (req.body.email)
             },
         });
-        console.log("This is the value befoe sending back")
         console.log(userlist)
         res.send(userlist)
     } catch (err) {
@@ -134,13 +144,21 @@ exports.checkUserExist = async (req,res) => {
     }
 }
 
-exports.createUser = async (req,res) => {
+exports.getuserAbacID = async(req,res)=> {
     try {
-        res.send(await new User(req.body).save())
-        console.log(req.body)
-    } catch(err) {
-        console.log("Server Error")
-        res.status(500).send("Server Error!")
+        console.log(req.body);
+        console.log("1")
+        const userlist = await User.find({
+            googleId:{
+                $eq: (req.body.gId)
+            },
+        });
+        console.log("2")
+        console.log(userlist)
+        res.send(userlist)
+    } catch (err) {
+        console.log("Server Error");
+        res.status(500).send("Server Error");
     }
 }
 

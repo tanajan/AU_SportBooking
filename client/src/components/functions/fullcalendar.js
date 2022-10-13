@@ -5,7 +5,7 @@ export const queryDate = async(values) =>
 
 export const chartDate = async(values) =>
     await axios.post(process.env.REACT_APP_API+'/chart',values)
-    
+
 export const createEvent = async(values) =>
     await axios.post(process.env.REACT_APP_API+'/event',values)
 
@@ -26,6 +26,9 @@ export const deleteEvent = async(values) =>
 
 export const checkUser = async(values) =>
     await axios.post(process.env.REACT_APP_API+'/listuser',values)
+
+export const getAbacId = async(values) =>
+    await axios.post(process.env.REACT_APP_API+'/getuser',values)
 
 export const createUser = async(values) =>
     await axios.post(process.env.REACT_APP_API+'/cuser',values)

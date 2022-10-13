@@ -1,8 +1,6 @@
 import "date-fns";
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import Datetime from 'react-datetime';
-import moment from 'moment';
 import "../style/dashboard.css";
 import { Col, Row, Card, Typography, Space, message, Divider } from 'antd';
 import { queryDate } from "../functions/fullcalendar";
@@ -32,6 +30,7 @@ const Dashboard = () => {
     }
 
     const [bookings, setbookings] = useState([]);
+    
     const onChangeValues = (temp) => {
         setquerydate({
             ...querydate,

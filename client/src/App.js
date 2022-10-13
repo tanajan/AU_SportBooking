@@ -9,13 +9,13 @@ import Login from "./components/pages/Login";
 import MainNav from './components/Nav/MainNav';
 import Dashboard from "./components/pages/dashboard";
 import SportSelection from "./components/pages/sportSelection";
+import BookingList from './components/pages/bookinglist';
 
 // -----Protected-----
 import ProtectedRoute from "./components/functions/protectedRoute";
 
 // ----- State management
 import { useSelector } from 'react-redux';
-
 
 function App() {
 
@@ -36,7 +36,6 @@ function App() {
     },
 
     content: {
-      zIndex: 'auto',
       margin: 0,
       padding: 0,
       // display: 'flex',
@@ -63,6 +62,7 @@ function App() {
                 <Route path="/home" element={<ProtectedRoute user={tempuser.user}><SportSelection /></ProtectedRoute>} />
                 <Route path="/bookings" element={<ProtectedRoute user={tempuser.user}><Index /></ProtectedRoute>} />
                 <Route path="/dashboard" element={<ProtectedRoute user={tempuser.user}><Dashboard /></ProtectedRoute>} />
+                <Route path="/bookinglist" element={<ProtectedRoute user={tempuser.user}><BookingList /></ProtectedRoute>} />
               </Routes>
             </div>
           </div>

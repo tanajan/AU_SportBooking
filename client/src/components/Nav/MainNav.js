@@ -21,7 +21,7 @@ const MainNav = () => {
     return (
         <header className="main-nav">
             <div className="main-nav-logo">
-                <img alt="abaclogo" src={sportlogo} style={{width: '75px', height: '75px', padding: '8px', textAlign: 'center'}} />
+                <img alt="abaclogo" src={sportlogo} style={{ width: '75px', height: '75px', padding: '8px', textAlign: 'center' }} />
                 <h1>Sport Reservation </h1>
             </div>
             <div className="main-nav-button">
@@ -32,7 +32,11 @@ const MainNav = () => {
                     : <><ul>
                         <li><NavLink to="/login">Home</NavLink></li>
                         <li><NavLink to="/home">Start Booking</NavLink></li>
-                        {user ? <>{user.userlv == "ADMIN" ? <li><NavLink to="/dashboard">Dashboard</NavLink></li> : <></>}</> : <></>}
+                        {user ? <>{user.userlv == "ADMIN" ? <>
+                            <li><NavLink to="/bookinglist">Booking List</NavLink></li>
+                            <li><NavLink to="/dashboard">Dashboard</NavLink></li>
+                        </>
+                            : <></>}</> : <></>}
                     </ul></>
                 }
 
@@ -42,7 +46,8 @@ const MainNav = () => {
                     <h1 >{user.givenName}</h1>
                     <div>
                         <GoogleLogout render={renderProps => (
-                            <button onClick={renderProps.onClick} style={{width:75, height:40,borderRadius: '8px',border:'gray'
+                            <button onClick={renderProps.onClick} style={{
+                                width: 75, height: 40, borderRadius: '8px', border: 'gray'
                             }}>Logout</button>
                         )} clientId={clientId} buttonText="Log out" onLogoutSuccess={logOut} />
                     </div>

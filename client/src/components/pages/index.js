@@ -6,7 +6,7 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from "@fullcalendar/interaction" // needed for dayClick
 
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-import { Col, Row, Card, Typography, Modal, Radio, message } from 'antd';
+import { Col, Row, Modal, Radio, message } from 'antd';
 import { useSearchParams } from 'react-router-dom';
 import { useSelector } from 'react-redux'
 import moment from 'moment'
@@ -18,13 +18,13 @@ import './index.css'
 
 const styles = {
   con: {
-      backgroundColor: "#f2f2f2",
-      padding: "250px",
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      width: "100vw",
-      height: "60vh"
+    backgroundColor: "#f2f2f2",
+    padding: "250px",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: "100vw",
+    height: "60vh"
   }
 }
 
@@ -74,13 +74,13 @@ const Index = ({ user }) => {
     start: '',
     end: '',
     sportType: '',
-    title:'',
+    title: '',
     courtNum: ''
   })
   const [bookings, setEvents] = useState([])
   const [currentBooking, setCurrentBooking] = useState([])
-  console.log(bookings)
   const [courtNum, setCourtNum] = useState('')
+
   const onCourtNumChange = ({ target: { value } }) => {
     setCourtNum(value);
     loadData()
@@ -90,7 +90,7 @@ const Index = ({ user }) => {
     confirm({
       title: 'Do you Want to delete these items?',
       icon: <ExclamationCircleOutlined />,
-      content: 'Test',
+      
       onOk() {
         handleDelete()
       },
@@ -100,11 +100,8 @@ const Index = ({ user }) => {
     });
   };
 
-
   const [id, setId] = useState('')
 
-  const { Title } = Typography;
-  
   const sportType = [
     { id: '1', name: 'Tennis', color: '#B6FFA1' },
     { id: '2', name: 'Volleyball', color: '#C0F0FF' },
@@ -237,7 +234,6 @@ const Index = ({ user }) => {
         setValues({ ...values, par1: '', par2: '', par3: '', par4: '', par5: '' })
         setIsModalVisible(false);
       } else {
-
         var parnum = checkParticipant();
         var bookingperiod = (moment(values.end)).diff(moment(values.start)) / 60000
         if (Math.floor(bookingperiod / 30) > Math.floor(parnum / 2)) {
@@ -365,19 +361,19 @@ const Index = ({ user }) => {
 
 
   return (
-    <div className='main-booking' style={styles.con}>
-      <Row gutter={{
-        xs: 8,
-        sm: 16,
-        md: 24,
-        lg: 32,
-      }}>
+    <div style={styles.con}>
+      <Row gutter={16
+        // xs: 8,
+        // sm: 16,
+        // md: 24,
+        // lg: 32,
+      }>
         {/* <Col span={6}> */}
-          {/* <Card>
+        {/* <Card>
             {tempuser.user ? <>{tempuser.user.userlv == "ADMIN" ?
               <h2>Current Booking</h2>
               : <><h2>Your Booking</h2></>}</> : <></>} */}
-            {/* <div id="external-book">
+        {/* <div id="external-book">
               <ul>
                 {sportType.map((item,index)=> 
                 <li 
@@ -388,8 +384,8 @@ const Index = ({ user }) => {
                 </li>)}
               </ul>
               </div> */}
-          {/* </Card> */}
-          {/* <Card>
+        {/* </Card> */}
+        {/* <Card>
             {tempuser.user ? <>{tempuser.user.userlv == "ADMIN" ?
               <ol>
                 {
@@ -407,65 +403,77 @@ const Index = ({ user }) => {
               : <></>}</> : <></>}
           </Card> */}
         {/* </Col> */}
-        
+
         <Col span={24}>
-          <Row>
-
-            <h3>Court Number :  </h3>
-
-            {(() => {
-              switch (selectedSport) {
-                case "Volleyball":
-                  return (
-                    <Radio.Group options={courtNumTenVol} onChange={onCourtNumChange} value={courtNum} optionType="button" buttonStyle='solid' />
-                  );
-                case "Badminton":
-                  return (
-                    <Radio.Group options={courtNumBad} onChange={onCourtNumChange} value={courtNum} optionType="button" buttonStyle='solid' />
-                  );
-                case "Tennis":
-                  return (
-                    <Radio.Group options={courtNumTenVol} onChange={onCourtNumChange} value={courtNum} optionType="button" buttonStyle='solid' />
-                  );
-                default:
-                  return null;
-              }
-            })()}
+          <Row gutter={16}>
+            <Col span={7}>
+              <h3>{selectedSport}</h3>
+            </Col>
+            <Col span={7}>
+              <h3>Court Number&nbsp;  &nbsp;&nbsp;</h3>
+            </Col>
+            <Col span={10}>
+              {(() => {
+                switch (selectedSport) {
+                  case "Volleyball":
+                    return (
+                      <Radio.Group options={courtNumTenVol} onChange={onCourtNumChange} value={courtNum} optionType="button" buttonStyle='solid' />
+                    );
+                  case "Badminton":
+                    return (
+                      <Radio.Group options={courtNumBad} onChange={onCourtNumChange} value={courtNum} optionType="button" buttonStyle='solid' />
+                    );
+                  case "Tennis":
+                    return (
+                      <Radio.Group options={courtNumTenVol} onChange={onCourtNumChange} value={courtNum} optionType="button" buttonStyle='solid' />
+                    );
+                  default:
+                    return null;
+                }
+              })()}
+            </Col>
           </Row>
-          <br />
-          {tempuser.user ? <>{tempuser.user.userlv == "ADMIN" ?
-            <FullCalendar
-              plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-              headerToolbar={{
-                left: 'prev,next today',
-                center: 'title',
-                right: "dayGridMonth,timeGridWeek,timeGridDay"
-              }}
-              allDaySlot={false}
-              slotMinTime="08:00:00"
-              slotMaxTime="20:00:00"
-              slotDuration="00:30:01"
-              initialView='dayGridMonth'
-              events={bookings}
-              selectable={true}
-              snapDuration={true}
-              select={handleAdminSelect}
-              datesSet={currentMonth}
-              eventClick={handleClick}
-            />
-            : <FullCalendar
-              plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-              initialView='timeGridDay'
-              allDaySlot={false}
-              slotMinTime="08:00:00"
-              slotMaxTime="20:00:00"
-              slotDuration="00:30:01"
-              events={bookings}
-              selectable={true}
-              select={handleSelect}
-              datesSet={currentMonth}
-              eventClick={handleClick}
-            />}</> : <></>}
+          <div>
+            {tempuser.user ? <>{tempuser.user.userlv == "ADMIN" ?
+              <FullCalendar
+                plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+                headerToolbar={{
+                  left: 'prev,next today',
+                  center: 'title',
+                  right: "dayGridMonth,timeGridWeek,timeGridDay"
+                }}
+                allDaySlot={false}
+                slotMinTime="08:00:00"
+                slotMaxTime="20:00:00"
+                slotDuration="00:30:01"
+                initialView='dayGridMonth'
+                events={bookings}
+                selectable={true}
+                snapDuration={true}
+                select={handleAdminSelect}
+                datesSet={currentMonth}
+                eventClick={handleClick}
+              />
+              : <FullCalendar
+                plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+                headerToolbar={{
+                  left: '',
+                  center: 'title',
+                  right: ''
+                }}
+                aspectRatio='0.8'
+                initialView='timeGridDay'
+                allDaySlot={false}
+                slotMinTime="08:00:00"
+                slotMaxTime="20:00:00"
+                slotDuration="00:30:01"
+                events={bookings}
+                selectable={true}
+                select={handleSelect}
+                datesSet={currentMonth}
+                eventClick={handleClick}
+              />}</> : <></>}
+          </div>
           <Modal title={selectedSport + "     Court : " + courtNum} visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
             <Row>
               <Col span={12}><h3>Requester</h3></Col>
@@ -501,7 +509,6 @@ const Index = ({ user }) => {
             footer={[
               <button onClick={handleCancel1}>Cancel</button>,
               <button onClick={showConfirm}> Delete</button>]}>
-
           </Modal>
         </Col>
       </Row>

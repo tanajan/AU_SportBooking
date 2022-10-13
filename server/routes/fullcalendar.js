@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router();
 
-const { createEvent,listEvent,chartEvent, currentday,currentMonth, deleteEvent,queryEvent,listEventwithcon, checkUserExist, createUser} = require('../controllers/fullcalendar')
+const { createEvent,listEvent,chartEvent, currentday,currentMonth,getuserAbacID, deleteEvent,queryEvent,listEventwithcon, checkUserExist, createUser} = require('../controllers/fullcalendar')
 
 router.post('/event',createEvent)
 
@@ -20,6 +20,8 @@ router.post('/dashboard',queryEvent)
 router.post('/chart',chartEvent)
 
 router.post('/listuser', checkUserExist)
+
+router.post('/getuser', getuserAbacID)
 
 router.post('/cuser',createUser)
 
