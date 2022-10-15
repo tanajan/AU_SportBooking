@@ -103,11 +103,10 @@ function Login() {
                             </Col>
                             <Col  xs={17}>
                                 <Title level={2}>
-                                    ABAC&nbsp;Sportcenter
+                                    John&nbsp;Paul&nbsp;Sport&nbsp;center
                                 </Title>
                                 <Paragraph>Sport&nbsp;Booking&nbsp;system</Paragraph>
                             </Col>
-
                         </Row>
                     </div>
 

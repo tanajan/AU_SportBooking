@@ -22,7 +22,7 @@ const MainNav = () => {
         <header className="main-nav">
             <div className="main-nav-logo">
                 <img alt="abaclogo" src={sportlogo} style={{ width: '75px', height: '75px', padding: '8px', textAlign: 'center' }} />
-                <h1>Sport Reservation </h1>
+                <h1>John&nbsp;Paul&nbsp;Sport&nbsp;Booking</h1>
             </div>
             <div className="main-nav-button">
                 {!user ?
