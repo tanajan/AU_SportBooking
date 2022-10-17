@@ -177,7 +177,6 @@ const BookingList = () => {
             <Divider></Divider>
             <Table columns={columns} dataSource={bo}></Table>
             <Modal title="Booking Information" visible={deleteModalvisible} >
-
             </Modal>
         </div>
     )

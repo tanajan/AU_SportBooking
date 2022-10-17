@@ -19,12 +19,12 @@ import './index.css'
 const styles = {
   con: {
     backgroundColor: "#f2f2f2",
-    padding: "250px",
+    padding: "0px 0 0 0",
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: "100vw",
-    height: "60vh"
+    width: "100%",
+    height: "80vh"
   }
 }
 
@@ -384,47 +384,7 @@ const Index = ({ user }) => {
 
   return (
     <div style={styles.con}>
-      <Row gutter={16
-        // xs: 8,
-        // sm: 16,
-        // md: 24,
-        // lg: 32,
-      }>
-        {/* <Col span={6}> */}
-        {/* <Card>
-            {tempuser.user ? <>{tempuser.user.userlv == "ADMIN" ?
-              <h2>Current Booking</h2>
-              : <><h2>Your Booking</h2></>}</> : <></>} */}
-        {/* <div id="external-book">
-              <ul>
-                {sportType.map((item,index)=> 
-                <li 
-                    className="normal-book"
-                    key={index} 
-                    style = {{backgroundColor:item.color}}>
-                    {item.name}
-                </li>)}
-              </ul>
-              </div> */}
-        {/* </Card> */}
-        {/* <Card>
-            {tempuser.user ? <>{tempuser.user.userlv == "ADMIN" ?
-              <ol>
-                {
-                  currentBooking.map((item, index) =>
-                    <li key={index}>
-                      {d == moment(item.start).format('DD/MM/YYYY')
-                        ? <>{moment(item.start).format('DD/MM/YYYY') + "-" + item.title + item.courtNum}<Tag color="green">Today</Tag></>
-                        : r >= moment(item.start) && r < moment(item.end)
-                          ? <>{moment(item.start).format('DD/MM/YYYY') + "-" + item.title + item.courtNum}<Tag color="yellow">On going</Tag></>
-                          : <>{moment(item.start).format('DD/MM/YYYY') + "-" + item.title + item.courtNum}</>
-                      }
-                    </li>)
-                }
-              </ol>
-              : <></>}</> : <></>}
-          </Card> */}
-        {/* </Col> */}
+      <Row>
         <Col span={24}>
           <Row gutter={16}>
             <Col span={7}>
@@ -482,7 +442,7 @@ const Index = ({ user }) => {
                   center: 'title',
                   right: ''
                 }}
-                aspectRatio='0.8'
+                aspectRatio='2'
                 initialView='timeGridDay'
                 allDaySlot={false}
                 slotMinTime="08:00:00"
