@@ -39,7 +39,6 @@ const MainNav = () => {
                             : <></>}</> : <></>}
                     </ul></>
                 }
-
             </div>
             {user ?
                 <div className="right-nav-button">
