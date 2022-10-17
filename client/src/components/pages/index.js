@@ -90,7 +90,7 @@ const Index = ({ user }) => {
     confirm({
       title: 'Do you Want to delete these items?',
       icon: <ExclamationCircleOutlined />,
-      
+
       onOk() {
         handleDelete()
       },
@@ -220,36 +220,64 @@ const Index = ({ user }) => {
   }
 
   const handleOk = async () => {
-    if (values.courtNum == "") {
-      message.error("Court Number need to be selected!")
+    if (checkDup()) {
+      message.error("Duplicate User founded!")
       setValues({ ...values, par1: '', par2: '', par3: '', par4: '', par5: '' })
       setIsModalVisible(false);
-    } else {
-      if (isOverlapped(values)) {
+    }
+    else {
+      if (values.courtNum == "") {
+        message.error("Court Number need to be selected!")
         setValues({ ...values, par1: '', par2: '', par3: '', par4: '', par5: '' })
         setIsModalVisible(false);
       } else {
-        var parnum = checkParticipant();
-        var bookingperiod = (moment(values.end)).diff(moment(values.start)) / 60000
-        if (Math.floor(bookingperiod / 30) > Math.floor(parnum / 2)) {
-          message.error("Not enough number of participants!")
+        if (isOverlapped(values)) {
+          setValues({ ...values, par1: '', par2: '', par3: '', par4: '', par5: '' })
+          setIsModalVisible(false);
         } else {
-          var checkuserexistance = await checkUserExist(values)
-          if (checkuserexistance) {
-            createEvent(values)
-              .then(res => {
-                setValues({ ...values, par1: '', par2: '', par3: '', par4: '', par5: '' })
-                loadData()
-              }).catch(err =>
-                console.log(err))
-            setIsModalVisible(false);
+          var parnum = checkParticipant();
+          var bookingperiod = (moment(values.end)).diff(moment(values.start)) / 60000
+          if (Math.floor(bookingperiod / 30) > Math.floor(parnum / 2)) {
+            message.error("Not enough number of participants!")
           } else {
-            message.error("We don't have these users in our system")
+            var checkuserexistance = await checkUserExist(values)
+            if (checkuserexistance) {
+              createEvent(values)
+                .then(res => {
+                  setValues({ ...values, par1: '', par2: '', par3: '', par4: '', par5: '' })
+                  loadData()
+                }).catch(err =>
+                  console.log(err))
+              setIsModalVisible(false);
+            } else {
+              message.error("We don't have these users in our system")
+            }
           }
         }
       }
     }
   };
+
+  const checkDup = () => {
+    var userlist = []
+    userlist.push(tempuser.user.user.email.split('@')[0])
+    userlist.push(values.par1)
+    userlist.push(values.par2)
+    userlist.push(values.par3)
+    userlist.push(values.par4)
+    userlist.push(values.par5)
+    var resultarr = []
+    for (let i = 0; i < userlist.length; i++) {
+      if (resultarr.includes(userlist[i])) {
+        return true
+      } else {
+        if (userlist[i] !== "") {
+          resultarr.push(userlist[i])
+        }
+      }
+    }
+    return false
+  }
 
   const handleCancel = () => {
     setValues({ ...values, par1: '', par2: '', par3: '', par4: '', par5: '' })
@@ -397,7 +425,6 @@ const Index = ({ user }) => {
               : <></>}</> : <></>}
           </Card> */}
         {/* </Col> */}
-
         <Col span={24}>
           <Row gutter={16}>
             <Col span={7}>
