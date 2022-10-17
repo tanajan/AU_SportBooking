@@ -124,7 +124,6 @@ const Index = ({ user }) => {
 
   const handleClick = (info) => {
     const id = info.event._def.extendedProps._id
-    console.log(id)
     setId(id)
     showModal1()
   }
@@ -133,7 +132,6 @@ const Index = ({ user }) => {
     deleteEvent(id)
       .then(res => {
         loadData()
-        console.log(res)
       }).catch(err => {
         console.log(err)
       })
@@ -169,7 +167,6 @@ const Index = ({ user }) => {
   }
   const handleAdminSelect = (info) => {
     showModal();
-
     setValues({
       ...values,
       start: info.startStr,
@@ -178,7 +175,6 @@ const Index = ({ user }) => {
       title: selectedSport,
       courtNum: courtNum
     })
-    console.log(values)
   }
 
   const currentMonth = (info) => {
@@ -186,7 +182,6 @@ const Index = ({ user }) => {
     const mm = moment(m).format('M')
     handlecurrentMonth({ mm })
       .then(res => {
-        console.log(res.data)
         setCurrentBooking(res.data)
       }).catch(err => {
         console.log(err)
@@ -241,7 +236,6 @@ const Index = ({ user }) => {
         } else {
           var checkuserexistance = await checkUserExist(values)
           if (checkuserexistance) {
-            console.log(values)
             createEvent(values)
               .then(res => {
                 setValues({ ...values, par1: '', par2: '', par3: '', par4: '', par5: '' })
