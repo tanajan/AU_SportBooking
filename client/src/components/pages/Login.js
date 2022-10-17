@@ -35,7 +35,6 @@ function Login() {
             height: "100vh"
         }
     }
-
     const onSuccess = (login) => {
         var userinfo = login.profileObj;
         checkUser(userinfo)

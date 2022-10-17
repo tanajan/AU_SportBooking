@@ -151,7 +151,7 @@ const Index = ({ user }) => {
         message.error("Sport Center is closed on Saturday!")
       } else {
         /*Check Available time*/
-        if (tday.getHours >= 8 && tday.getHours <= 20) {
+        if (tday.getHours() >= 8 && tday.getHours() <= 20) {
           showModal();
           setValues({
             ...values,
@@ -481,7 +481,7 @@ const Index = ({ user }) => {
             </Row>
             <Row>
               <Col span={12}><h4>{tempuser.user.user.name}</h4></Col>
-              <Col span={12}><h4>{tempuser.user.user.email.slice(0, 8)}</h4></Col>
+              <Col span={12}><h4>{tempuser.user.user.email.split('@')[0]}</h4></Col>
             </Row>
             <Row>
               <Col span={12}><h3>Participant 1 ID</h3></Col>

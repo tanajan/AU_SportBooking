@@ -51,7 +51,7 @@ const BookingList = () => {
             var tempdata = {
                 key: i + 1,
                 id: data[i]._id,
-                requester: reqid[0].email.slice(0, 8),
+                requester: reqid[0].email.split('@')[0],
                 sportType: data[i].sportType,
                 courtNum: data[i].courtNum,
                 start: new Date(data[i].start).toLocaleTimeString(),
