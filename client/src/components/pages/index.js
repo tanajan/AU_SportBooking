@@ -280,11 +280,13 @@ const Index = ({ user }) => {
     return false
   }
 
+  /*Cancel selected in information modal*/
   const handleCancel = () => {
     setValues({ ...values, par1: '', par2: '', par3: '', par4: '', par5: '' })
     setIsModalVisible(false);
   };
 
+  /*Show information Modal*/
   const showModal1 = () => {
     setIsModalVisible1(true);
   };
@@ -457,6 +459,7 @@ const Index = ({ user }) => {
                 datesSet={currentMonth}
               />}</> : <></>}
           </div>
+          {/* Create Booking Modal  */}
           <Modal title={selectedSport + "     Court : " + courtNum} visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
             <Row>
               <Col span={12}><h3>Requester</h3></Col>
