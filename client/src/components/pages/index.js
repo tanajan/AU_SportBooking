@@ -491,10 +491,10 @@ const Index = ({ user }) => {
             </Row>
 
           </Modal>
-          <Modal title="Booking Information" visible={isModalVisible1} onOk={handleOk1} onCancel={handleCancel1}
+          <Modal title="Delete this booking?" visible={isModalVisible1} onOk={handleOk1} onCancel={handleCancel1}
             footer={[
               <button onClick={handleCancel1}>Cancel</button>,
-              <button onClick={showConfirm}> Delete</button>]}>
+              <button onClick={showConfirm}>Ok</button>]}>
             
           </Modal>
         </Col>
