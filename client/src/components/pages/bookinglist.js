@@ -48,9 +48,9 @@ const BookingList = () => {
         var dataset = []
         for (let i = 0; i < data.length; i++) {
             var reqid = await getIdAbac(data[i].requester)
-            var startampm = new Date(data[i].start).getHours() >= 12 ? 'pm' : 'am';
-            var startstr = new Date(data[i].start).getHours() +":"+ new Date(data[i].start).getMinutes(); + " " + startampm
-            var endampm = new Date(data[i].end).getHours() >= 12 ? 'pm' : 'am';
+            var startampm = ((new Date(data[i].start).getHours()) >= 12) ? 'PM' : 'AM';
+            var startstr = new Date(data[i].start).getHours() +":"+ new Date(data[i].start).getMinutes() + " " + startampm
+            var endampm = ((new Date(data[i].end).getHours()) >= 12) ? 'PM' : 'AM';
             var endstr = new Date(data[i].end).getHours() +":"+ new Date(data[i].end).getMinutes() + " " + endampm;
             var tempdata = {
                 key: i + 1,

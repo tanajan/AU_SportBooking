@@ -52,25 +52,24 @@ const SportSelection = ({ user }) => {
                 lg: 32,
             }}>
                 <Col className="sportselectbox" span={8}>
-                    <Card hoverable type="inner" title="Badminton" style={{ width: 300, height: 400, padding: '8px', textAlign: 'center' }}
-                        cover={<img alt="badminton" src={badminton} />}>
+                    <Card hoverable title="Badminton" style={{ width: 300, height: 350, padding: '8px', textAlign: 'center' }}
+                        cover={<img alt="badminton" src={badminton} style={{width: "284px", height: "190px" }}/>}>
                         <Button onClick={selectBadminton} type="primary" shape="round" >
                             Book now!
                         </Button>
                     </Card>
                 </Col>
                 <Col className="sportselectbox" span={8}>
-                    <Card hoverable title="VolleyBall" style={{ width: 300, height: 400, padding: '8px', textAlign: 'center' }}
-                        cover={<img alt="volleyball" src={volleyball}
-                        />}>
+                    <Card hoverable title="VolleyBall" style={{ width: 300, height: 350, padding: '8px', textAlign: 'center' }}
+                        cover={<img alt="volleyball" src={volleyball} style={{width: "284px", height: "190px" }}/>}>
                         <Button onClick={selectVolleyBall} type="primary" shape="round" >
                             Book now!
                         </Button>
                     </Card>
                 </Col>
                 <Col className="sportselectbox" span={8}>
-                    <Card hoverable title="Tennis" style={{ width: 300, height: 400, padding: '8px', textAlign: 'center' }}
-                        cover={<img alt="badminton" src={tennis} />}>
+                    <Card hoverable title="Tennis" style={{ width: 300, height: 350, padding: '8px', textAlign: 'center' }}
+                        cover={<img alt="badminton" src={tennis} style={{width: "284px", height: "190px" }}/>}>
                         <Button onClick={selectTennis} type="primary" shape="round" >
                             Book now!
                         </Button>
