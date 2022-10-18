@@ -258,6 +258,7 @@ const Index = ({ user }) => {
     }
   };
 
+  /* Check user duplication*/
   const checkDup = () => {
     var userlist = []
     userlist.push(tempuser.user.user.email.split('@')[0])
@@ -303,6 +304,7 @@ const Index = ({ user }) => {
     setIsModalVisible1(false);
   };
 
+  /*Check whether user exist in the system or not */
   const checkUserExist = async (info) => {
     var emaillist = []
     if (info.par1 != '') {
@@ -452,7 +454,6 @@ const Index = ({ user }) => {
                 selectable={true}
                 select={handleSelect}
                 datesSet={currentMonth}
-                eventClick={handleClick}
               />}</> : <></>}
           </div>
           <Modal title={selectedSport + "     Court : " + courtNum} visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
@@ -490,6 +491,7 @@ const Index = ({ user }) => {
             footer={[
               <button onClick={handleCancel1}>Cancel</button>,
               <button onClick={showConfirm}> Delete</button>]}>
+            
           </Modal>
         </Col>
       </Row>

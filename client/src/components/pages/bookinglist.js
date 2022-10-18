@@ -4,7 +4,7 @@ import {  deleteEvent } from "../functions/fullcalendar"
 import { queryDate, getAbacId } from "../functions/fullcalendar";
 import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment'
-import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
+import { DeleteOutlined, UpCircleOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
 
 const BookingList = () => {
     const styles = {
@@ -48,14 +48,18 @@ const BookingList = () => {
         var dataset = []
         for (let i = 0; i < data.length; i++) {
             var reqid = await getIdAbac(data[i].requester)
+            var startampm = new Date(data[i].start).getHours() >= 12 ? 'pm' : 'am';
+            var startstr = new Date(data[i].start).getHours() +":"+ new Date(data[i].start).getMinutes(); + " " + startampm
+            var endampm = new Date(data[i].end).getHours() >= 12 ? 'pm' : 'am';
+            var endstr = new Date(data[i].end).getHours() +":"+ new Date(data[i].end).getMinutes() + " " + endampm;
             var tempdata = {
                 key: i + 1,
                 id: data[i]._id,
                 requester: reqid[0].email.split('@')[0],
                 sportType: data[i].sportType,
                 courtNum: data[i].courtNum,
-                start: new Date(data[i].start).toLocaleTimeString(),
-                end: new Date(data[i].end).toLocaleTimeString(),
+                start: startstr,
+                end: endstr,
                 par1: data[i].par1,
                 par2: data[i].par2,
                 par3: data[i].par3,
@@ -120,7 +124,6 @@ const BookingList = () => {
                 console.log(err)
                 message.error('Server Error');
             })
-
     }
 
 
@@ -156,7 +159,7 @@ const BookingList = () => {
             key: 'action',
             render: (record) => {
                 return <>
-                    <EditOutlined onClick={() => {
+                    <UpCircleOutlined onClick={() => {
                         showinformationModal(record)
                     }} />
                     <DeleteOutlined onClick={() => {
