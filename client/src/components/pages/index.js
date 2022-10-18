@@ -299,6 +299,7 @@ const Index = ({ user }) => {
     setIsModalVisible1(false);
   };
 
+  /* Close the information Modal*/
   const handleCancel1 = () => {
     setValues({ ...values, par1: '', par2: '', par3: '', par4: '', par5: '' })
     setIsModalVisible1(false);

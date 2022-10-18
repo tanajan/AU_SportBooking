@@ -108,7 +108,7 @@ const BookingList = () => {
             content: "id : " + id.requester,
             onOk() {
                 handleDelete(id.id)
-                window.location.reload(false);
+                
             },
             onCancel() {
 
@@ -165,7 +165,6 @@ const BookingList = () => {
                     <DeleteOutlined onClick={() => {
                         onDeleteBooking(record)
                     }} style={{ color: "red", marginLeft: "1.5rem" }} />
-
                 </>
             }
         }
