@@ -111,8 +111,8 @@ const Index = ({ user }) => {
     loadData()
   }, [courtNum])
 
-  const loadData = () => {
-    listEventwithcon({ courtNum })
+  const loadData = async() => {
+    await listEventwithcon({ courtNum })
       .then(res => {
         setValues({ ...values, requester: tempuser.user.user.googleId })
         setEvents(res.data)
