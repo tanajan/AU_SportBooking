@@ -7,6 +7,7 @@ import background from "./components/image/bgi.png";
 import Index from "./components/pages/index";
 import Login from "./components/pages/Login";
 import MainNav from './components/Nav/MainNav';
+import Footer from './components/vms/vmsfooter';
 import Dashboard from "./components/pages/dashboard";
 import SportSelection from "./components/pages/sportSelection";
 import BookingList from './components/pages/bookinglist';
@@ -68,6 +69,7 @@ function App() {
           </div>
         </main>
       </BrowserRouter>
+      <Footer/>
     </div>
   );
 }

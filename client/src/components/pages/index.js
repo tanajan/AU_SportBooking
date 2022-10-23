@@ -220,6 +220,7 @@ const Index = ({ user }) => {
   }
 
   const handleOk = async () => {
+    await loadData()
     if (checkDup()) {
       message.error("Duplicate User founded!")
       setValues({ ...values, par1: '', par2: '', par3: '', par4: '', par5: '' })

@@ -11,7 +11,7 @@ function Login() {
     const dispatch = useDispatch();
     const { Title,Paragraph } = Typography;
     const [user, setUser] = useState();
-    const clientId = '288670835064-8ittcsg7le6vthmsl90m88j9aljhclf7.apps.googleusercontent.com';
+    const clientId = process.env.REACT_APP_GOOGLE_CLIENTID;
     const adminid = process.env.REACT_APP_ADMINS.split(",");
     var userlv = null;
 

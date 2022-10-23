@@ -1,0 +1,11 @@
+.main-footer {
+    background-color: rgb(243, 242, 242);
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.footer-text {
+    font-size: 8px;
+}

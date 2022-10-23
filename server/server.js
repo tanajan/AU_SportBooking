@@ -44,8 +44,5 @@ if(process.env.NODE_ENV==='production') {
 
 
 const port = process.env.PORT || 8000;
-// app.get("*", (req, res) => {
-//     res.sendFile(path.join(__dirname, "client", "build", "index.html"));
-// });
 app.listen(port,()=>console.log('Server is runnning on port '  + port))
 
