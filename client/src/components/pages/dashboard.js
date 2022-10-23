@@ -2,7 +2,7 @@ import "date-fns";
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import "../style/dashboard.css";
-import { Col, Row, Card, Typography, Space, message, Divider } from 'antd';
+import { Col, Row, Card, Typography, Divider } from 'antd';
 import { queryDate } from "../functions/fullcalendar";
 import Icon, { FormOutlined } from '@ant-design/icons';
 import badmintonlogo from '../image/badmintonlogo3.png';

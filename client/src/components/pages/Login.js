@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
+import { NavLink } from 'react-router-dom'
 import { gapi } from 'gapi-script';
 import '../style/Login_style.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { checkUser, createUser } from "../functions/fullcalendar"
-import { Col, Row, Card, Typography } from 'antd';
+import { Col, Row, Card, Typography, Button } from 'antd';
 import sportlogo from '../image/Sportlogo.png'
+
 function Login() {
     const tempuser = useSelector(state => ({ ...state }))
     const dispatch = useDispatch();
-    const { Title,Paragraph } = Typography;
+    const { Title, Paragraph } = Typography;
     const [user, setUser] = useState();
-    const clientId = process.env.REACT_APP_GOOGLE_CLIENTID;
+    const clientId = "288670835064-8ittcsg7le6vthmsl90m88j9aljhclf7.apps.googleusercontent.com"
     const adminid = process.env.REACT_APP_ADMINS.split(",");
     var userlv = null;
 
@@ -33,6 +35,11 @@ function Login() {
             justifyContent: 'center',
             width: "100vw",
             height: "100vh"
+        },
+        mid: {
+            display: "flex",
+            alignItems: 'center',
+            justifyContent: 'center'
         }
     }
     const onSuccess = (login) => {
@@ -77,14 +84,37 @@ function Login() {
         <div style={styles.con}>
             {tempuser.user ? (
 
-                <div>
-                    <img src={tempuser.user.user.imageUrl} alt="" />
-                    <h3>User Logged in</h3>
-                    <p>Name: {tempuser.user.user.name}</p>
-                    <p>Email Address: {tempuser.user.user.email}</p>
-                    <br />
-                    <br />
-                    <GoogleLogout clientId={clientId} buttonText="Log out" onLogoutSuccess={logOut} />
+                <div style={styles.mid}>
+                    <Card>
+                        <Card title="John Paul Sport Booking System">
+                            <p>
+                                This is the website to book court at John Paul Sport Center
+                            </p>
+
+                            <p>Current sports that are available are : </p>
+                            <p>
+                                1. Badminton
+                            </p>
+                            <p>
+                                2. Volleyball
+                            </p>
+                            <p>
+                                3. Tennis
+                            </p>
+                        </Card>
+                        <Card title="Booking procedure">
+                            <p>All the bookings are only able to book on that day.</p>
+                            <p>1. You can only book from 8 AM to 8 PM</p>
+                            <p>2. The booking system are open everyday except Saturday</p>
+                            <p>3. Select court number before make a booking</p>
+                            <p>4. You need two users per 30 minutes court booking</p>
+                        </Card>
+                        <Card style={styles.mid}>
+                            <Button type="primary" shape="round" size={'large'} >
+                                <NavLink to="/home">Start Booking</NavLink>
+                            </Button>
+                        </Card>
+                    </Card>
                 </div>
 
             ) : (
@@ -93,14 +123,13 @@ function Login() {
                     borderRadius: "20px",
                     display: "flex",
                     width: '500px',
-                    // height: '500px',
                 }}>
                     <div className="number">
                         <Row align="top" gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
                             <Col xs={7}>
                                 <img src={sportlogo} width="110px" height="110px" />
                             </Col>
-                            <Col  xs={17}>
+                            <Col xs={17}>
                                 <Title level={2}>
                                     John&nbsp;Paul&nbsp;Sport&nbsp;center
                                 </Title>
