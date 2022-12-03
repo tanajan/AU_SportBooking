@@ -6,7 +6,7 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from "@fullcalendar/interaction" // needed for dayClick
 
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-import { Col, Row, Modal, Radio, message } from 'antd';
+import { Col, Row, Modal, Radio, message, Button, Divider, DatePicker, TimePicker, TreeSelect } from 'antd';
 import { useSearchParams } from 'react-router-dom';
 import { useSelector } from 'react-redux'
 import moment from 'moment'
@@ -15,6 +15,8 @@ import moment from 'moment'
 import { createEvent, checkUser, handlecurrentMonth, deleteEvent, listEventwithcon } from "../functions/fullcalendar"
 
 import './index.css'
+
+const { RangePicker } = DatePicker;
 
 const styles = {
   con: {
@@ -57,6 +59,54 @@ const courtNumTenVol = [
     value: 'TV2'
   }
 ]
+
+const treeData = [
+  {
+    value: 'parent 1',
+    disabled: true,
+    title: 'Sport',
+    children: [
+      {
+        value: 'parent 1-0',
+        title: 'Volleyball and Tennis',
+        disabled: true,
+        children: [
+          {
+            value: 'TV1',
+            title: 'Court 1',
+          },
+          {
+            value: 'TV2',
+            title: 'Court 2',
+          },
+        ],
+      },
+      {
+        value: 'parent 1-1',
+        title: 'Badminton',
+        disabled: true,
+        children: [
+          {
+            value: 'B1',
+            title: 'Court 1',
+          },
+          {
+            value: 'B2',
+            title: 'Court 2',
+          },
+          {
+            value: 'B3',
+            title: 'Court 3',
+          },
+          {
+            value: 'B4',
+            title: 'Court 4',
+          },
+        ],
+      },
+    ],
+  },
+];
 const Index = ({ user }) => {
   const [searchparams] = useSearchParams();
   const selectedSport = searchparams.get("type");
@@ -64,6 +114,9 @@ const Index = ({ user }) => {
   const { confirm } = Modal;
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isModalVisible1, setIsModalVisible1] = useState(false);
+  const [isModalVisible2, setIsModalVisible2] = useState(false);
+  const [eventdt, seteventdt] = useState()
+  const [treevalue, settreeValue] = useState();
   const [values, setValues] = useState({
     requester: '',
     par1: '',
@@ -111,7 +164,7 @@ const Index = ({ user }) => {
     loadData()
   }, [courtNum])
 
-  const loadData = async() => {
+  const loadData = async () => {
     await listEventwithcon({ courtNum })
       .then(res => {
         setValues({ ...values, requester: tempuser.user.user.googleId })
@@ -166,6 +219,7 @@ const Index = ({ user }) => {
     }
   }
   const handleAdminSelect = (info) => {
+    console.log(info)
     showModal();
     setValues({
       ...values,
@@ -219,14 +273,17 @@ const Index = ({ user }) => {
     return false;
   }
 
+  //Main event creation handler
   const handleOk = async () => {
     await loadData()
+    //Check input duplication
     if (checkDup()) {
       message.error("Duplicate User founded!")
       setValues({ ...values, par1: '', par2: '', par3: '', par4: '', par5: '' })
       setIsModalVisible(false);
     }
     else {
+      //Check court number whether selected or not
       if (values.courtNum == "") {
         message.error("Court Number need to be selected!")
         setValues({ ...values, par1: '', par2: '', par3: '', par4: '', par5: '' })
@@ -259,6 +316,32 @@ const Index = ({ user }) => {
     }
   };
 
+  const handleEventCreation = () => {
+    if (values.start == "" || values.end == "") {
+      message.error("No evet date time!")
+    } else {
+      if (values.title == "") {
+        message.error("No Title!")
+      } else {
+        if (values.courtNum == "") {
+          message.error("No court number sekected!")
+        } else {
+          if (isOverlapped(values)) {
+          } else {
+            createEvent(values)
+              .then(res => {
+                setValues({ ...values, par1: '', par2: '', par3: '', par4: '', par5: '' })
+                loadData()
+              }).catch(err =>
+                console.log(err))
+            setIsModalVisible2(false);
+            console.log("Event create success")
+          }
+        }
+      }
+
+    }
+  }
   /* Check user duplication*/
   const checkDup = () => {
     var userlist = []
@@ -287,11 +370,33 @@ const Index = ({ user }) => {
     setIsModalVisible(false);
   };
 
+  const onChange = (date, dateString) => {
+    // console.log(date, dateString)
+  }
+
+  const onTreeChange = (newValue) => {
+
+    settreeValue(newValue);
+    setValues({ ...values, courtNum: newValue, sportType: "Event" })
+    console.log(values)
+  };
+
+  const onEventDateTimeSelected = (value) => {
+    setValues({ ...values, start: value[0]._d, end: value[1]._d })
+    console.log('onOk: ', value);
+    console.log(value[0]._d)
+    console.log(value[1]._d)
+    console.log(values)
+  };
+
   /*Show information Modal*/
   const showModal1 = () => {
     setIsModalVisible1(true);
   };
 
+  const showEventcreationModal = () => {
+    setIsModalVisible2(true);
+  }
   const handleOk1 = () => {
     // updateEvent(formData)
     // .then(res=>{
@@ -307,6 +412,13 @@ const Index = ({ user }) => {
     setValues({ ...values, par1: '', par2: '', par3: '', par4: '', par5: '' })
     setIsModalVisible1(false);
   };
+
+  const handleCancel2 = () => {
+    setValues({ ...values, par1: '', par2: '', par3: '', par4: '', par5: '', title: '' })
+    settreeValue(null)
+    seteventdt(null)
+    setIsModalVisible2(false);
+  }
 
   /*Check whether user exist in the system or not */
   const checkUserExist = async (info) => {
@@ -422,25 +534,37 @@ const Index = ({ user }) => {
           </Row>
           <div>
             {tempuser.user ? <>{tempuser.user.userlv == "ADMIN" ?
-              <FullCalendar
-                plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-                headerToolbar={{
-                  left: 'prev,next today',
-                  center: 'title',
-                  right: "dayGridMonth,timeGridWeek,timeGridDay"
-                }}
-                allDaySlot={false}
-                slotMinTime="08:00:00"
-                slotMaxTime="20:00:00"
-                slotDuration="00:30:01"
-                initialView='dayGridMonth'
-                events={bookings}
-                selectable={true}
-                snapDuration={true}
-                select={handleAdminSelect}
-                datesSet={currentMonth}
-                eventClick={handleClick}
-              />
+              <div>
+                <FullCalendar
+                  plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+                  headerToolbar={{
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: "dayGridMonth,timeGridWeek,timeGridDay"
+                  }}
+                  allDaySlot={false}
+                  slotMinTime="08:00:00"
+                  slotMaxTime="20:00:00"
+                  slotDuration="00:30:01"
+                  initialView='dayGridMonth'
+                  events={bookings}
+                  selectable={true}
+                  snapDuration={true}
+                  select={handleAdminSelect}
+                  datesSet={currentMonth}
+                  eventClick={handleClick}
+                />
+                <Divider />
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}>
+                  <Button type="primary" onClick={() => showEventcreationModal()}>Book an event</Button>
+                </div>
+
+              </div>
+
               : <FullCalendar
                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
                 headerToolbar={{
@@ -472,7 +596,7 @@ const Index = ({ user }) => {
             </Row>
             <Row>
               <Col span={12}><h3>Participant 1 ID</h3></Col>
-              <Col span={12}><input name="par1" value={values.par1} onChange={onChangeValues} /></Col>
+              <Col span={12}><input name="requester" value={values.par1} onChange={onChangeValues} /></Col>
             </Row>
             <Row>
               <Col span={12}><h3>Participant 2 ID</h3></Col>
@@ -490,13 +614,52 @@ const Index = ({ user }) => {
               <Col span={12}><h3>Participant 5 ID</h3></Col>
               <Col span={12}><input name="par5" value={values.par5} onChange={onChangeValues} /></Col>
             </Row>
-
           </Modal>
+
+          {/* Deltion Model */}
           <Modal title="Delete this booking?" visible={isModalVisible1} onOk={handleOk1} onCancel={handleCancel1}
             footer={[
               <button onClick={handleCancel1}>Cancel</button>,
               <button onClick={showConfirm}>Ok</button>]}>
-            
+          </Modal>
+
+          {/* Event Creation Model */}
+          <Modal title="Event Creation" visible={isModalVisible2} onOk={handleEventCreation} onCancel={handleCancel2}>
+            <Row>
+              <Col span={12}><h3>Title</h3></Col>
+              <Col span={12}><input name="title" value={values.title} onChange={onChangeValues} /></Col>
+            </Row>
+            <Row>
+              <Col span={12}><h3>Court Number</h3></Col>
+              <Col span={12}><TreeSelect
+                style={{
+                  width: '100%',
+                }}
+                value={treevalue}
+                dropdownStyle={{
+                  maxHeight: 400,
+                  overflow: 'auto',
+                }}
+                treeData={treeData}
+                placeholder="Please select"
+                treeDefaultExpandAll
+                onChange={onTreeChange}
+              /></Col>
+            </Row>
+            <Row>
+              <Col span={12}><h3>Event time</h3></Col>
+              <Col span={12}> <RangePicker
+                showTime={{
+                  format: 'HH:mm',
+                  minuteStep: 30,
+                }}
+                disabledHours={() => [0, 1, 2, 3, 4, 5, 6, 7, 20, 21, 22, 23]}
+                hideDisabledOptions="true"
+                format="YYYY-MM-DD HH:mm"
+                onChange={onChange}
+                onOk={onEventDateTimeSelected}
+              /></Col>
+            </Row>
           </Modal>
         </Col>
       </Row>
